@@ -306,7 +306,7 @@ void _GIF_Decode(char * szFileName)
 }
 
 static char _acBuffer[100 * 1024] __attribute__((aligned(32)));
-static __align(32) UINT8 _auOutBuffer[XSIZE_PHYS * YSIZE_PHYS * 2];
+static UINT8 _auOutBuffer[XSIZE_PHYS * YSIZE_PHYS * 2] __attribute__((aligned(32)));
 
 extern GUI_CONTEXT * GUI_pContext;
 
