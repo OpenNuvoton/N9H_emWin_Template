@@ -1,5 +1,11 @@
 # Windows tool and user manual
 
+### Resource link
+
+[Official FFmpeg](https://ffmpeg.org/)
+
+[Download ffmpeg.exe for Windows](https://ffmpeg.zeranoe.com/builds/)
+
 ### Nuvoton_Update_HMI_Image.zip
 
 Convert image file(s) to dta file(s).
