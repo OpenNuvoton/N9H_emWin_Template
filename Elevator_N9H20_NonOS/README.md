@@ -4,7 +4,11 @@ This is the reference implementation on N9H20 NonOS platform.
 
 ### Changelog.pdf
 
-N9H20 Thermostat change history.
+N9H20 Elevator change history.
+
+### Elevator_Reference_Implementation.pdf
+
+N9H20 Elevator user manual.
 
 ### Note
 
