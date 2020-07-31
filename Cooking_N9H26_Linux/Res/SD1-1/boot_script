@@ -1,0 +1,34 @@
+#!/bin/sh
+
+ENABLE_NETWORK=0
+ENABLE_MPLAYER=0
+
+echo "Run boot_script"
+
+if [ "$ENABLE_NETWORK" -eq "1" ]; then
+	ifconfig eth0 up
+	udhcpc
+if [ ! -d "/dev/pts" ]; then
+        mkdir /dev/pts
+        mount -t devpts devpts /dev/pts
+fi
+	telnetd -l /bin/sh &
+fi
+
+
+##### run user's boot procedure #####
+cd /mnt/nand1-1
+./CookingDemo &
+
+cd /mnt/nand1-1
+echo "current path is \""`pwd`"\""
+#ls -l
+
+if [ "$ENABLE_MPLAYER" -eq "1" ]; then
+	./mplayer -loop 0 -slave -vendor-framedrop 1 -playlist DCIM/test_playlist &
+fi
+
+#insmod /usr/g_file_storage.ko file=/dev/sda5 stall=0 removable=1
+rm -rf Recycled
+rm -rf "\$RECYCLE.BIN"
+rm -rf "System Volume Information"
