@@ -185,6 +185,12 @@ void TMR0_IRQHandler_ARTask(void)
     if (g_ARCnt > NVT_AR_CNT)
         g_ARCnt = 1;
 }
+//
+// JPEG bitstream buffer size in byte
+// FIXME some JPEG files need to increase this value
+// lower value can speed up the performance of parsing JPEG header and JPEG decoding
+//
+#define NVT_JPEG_BITSTREAM_SIZE (200*1024)
 
 /*********************************************************************
 *
@@ -305,7 +311,7 @@ void _GIF_Decode(char * szFileName)
     GUI_GIF_Draw(u8BMPBuf, i32FileSize, 300, 0);
 }
 
-static char _acBuffer[100 * 1024] __attribute__((aligned(32)));
+static char _acBuffer[NVT_JPEG_BITSTREAM_SIZE] __attribute__((aligned(32)));
 static UINT8 _auOutBuffer[XSIZE_PHYS * YSIZE_PHYS * 2] __attribute__((aligned(32)));
 
 extern GUI_CONTEXT * GUI_pContext;
@@ -356,7 +362,7 @@ int JPEG_X_Draw(GUI_GET_DATA_FUNC * pfGetData, void * p, int x0, int y0)
 //    U32                 OutBufferSize;
 //    U8                * pOutBuffer;
 
-    /*Off              = */pfGetData(p, (const U8 **)&pInBuffer, (100 * 1024), 0);
+    /*Off              = */pfGetData(p, (const U8 **)&pInBuffer, NVT_JPEG_BITSTREAM_SIZE, 0);
 
 //    OutBufferSize = 800 * 480 * 2;
 //    hOutBuffer = GUI_ALLOC_AllocNoInit(OutBufferSize);
@@ -364,14 +370,14 @@ int JPEG_X_Draw(GUI_GET_DATA_FUNC * pfGetData, void * p, int x0, int y0)
     //
     // runtime to get jpeg width and height will decrease performance
     //
-    GUI_JPEG_GetInfo(pInBuffer, (100 * 1024), &Info);
+    GUI_JPEG_GetInfo(pInBuffer, NVT_JPEG_BITSTREAM_SIZE, &Info);
     //
     // unmark sysprintf here to increase performance
     // run sysprintf here is just for debugging and will decrease performance
     //
 //    sysprintf("x=%d, y=%d\n", Info.XSize, Info.YSize);
 //    sysprintf("x0=%d, y0=%d\n", x0, y0);
-    memcpy(_acBuffer, pInBuffer, (100 * 1024));
+    memcpy(_acBuffer, pInBuffer, NVT_JPEG_BITSTREAM_SIZE);
     jpegOpen();
     jpegInit();
     jpegIoctl(JPEG_IOCTL_SET_BITSTREAM_ADDR, (((unsigned int)_acBuffer) | BIT31), 0);
