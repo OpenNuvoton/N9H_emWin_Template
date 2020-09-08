@@ -75,7 +75,7 @@ static U8 s_au8WeatherWeather2[64 * 1024];
 */
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
   { WINDOW_CreateIndirect, "WeatherMenu2", ID_WINDOW_0, 0, 0, 800, 480, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "WeatherBack", ID_BUTTON_0, 0, 0, 50, 50, 0, 0x0, 0 },
+  { BUTTON_CreateIndirect, "Back", ID_BUTTON_0, 0, 0, 50, 50, 0, 0x0, 0 },
   { IMAGE_CreateIndirect, "WeatherWeather2", ID_IMAGE_0, 50, 0, 750, 480, 0, 0, 0 },
   // USER START (Optionally insert additional widgets)
   // USER END
@@ -131,7 +131,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     IMAGE_SetBMP(hItem, pData, FileSize);
     // USER START (Optionally insert additional code for further widget initialization)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_0);
-        FileSize = NVT_Load_File("/mnt/png/w2.png", s_au8WeatherWeather2);
+        FileSize = NVT_Load_File("/tmp/w2.png", s_au8WeatherWeather2);
         IMAGE_SetPNG(hItem, s_au8WeatherWeather2, FileSize);
     // USER END
     break;

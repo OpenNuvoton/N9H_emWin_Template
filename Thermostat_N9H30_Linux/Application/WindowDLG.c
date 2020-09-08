@@ -179,7 +179,7 @@ extern int SettingModbusFlag;
 extern int SettingVNCFlag;
 
 static char s_buf0[1024];
-char g_buf0[4 * 1024];
+//char g_buf0[4 * 1024];
 
 // USER END
 
@@ -716,6 +716,7 @@ static int _SliderSkinWeatherMenu(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
 int g_WeatherFlag;
 static char s_buf3[2 * 1024];
 static char s_buf3a[2 * 1024];
+static char s_buf3b[1 * 1024];
 extern char g_au8CITY[];
 static char g_au8CITYWeather[1024];
 
@@ -726,7 +727,7 @@ static void _cbWeatherMenu(WM_MESSAGE * pMsg) {
   int        NCode;
     U32 FileSize;
     FILE *pstream;
-    int i, j;
+    int i, j, k;
     static WM_HWIN hWinWeatherWeather;
     static WM_HWIN hTextWeatherCity;
     static WM_HWIN hTemp1;
@@ -739,7 +740,7 @@ static void _cbWeatherMenu(WM_MESSAGE * pMsg) {
   case WM_CREATE:
       AnimData3.Dir  = 0;
       AnimData3.hWin = hWin;
-        sprintf(g_au8CITY, "%s", "hsinchu");
+        //sprintf(g_au8CITY, "%s", "hsinchu");
         //
         //
         //
@@ -767,7 +768,8 @@ static void _cbWeatherMenu(WM_MESSAGE * pMsg) {
     //
     hTemp2 = TEXT_CreateEx(128, 40, 128, 60, hWin, WM_CF_SHOW, 0, GUI_ID_TEXT0, NULL);
     TEXT_SetFont(hTemp2, GUI_FONT_32B_1);
-    TEXT_SetText(hTemp2, ".C");
+    s_buf3a[0] = 0xB0; s_buf3a[1] = 'C'; s_buf3a[2] = 0x00;
+    TEXT_SetText(hTemp2, s_buf3a);
     TEXT_SetTextAlign(hTemp2, GUI_TA_LEFT | GUI_TA_VCENTER);
     TEXT_SetTextColor(hTemp2, GUI_MAKE_COLOR(0x00000000));
     //
@@ -781,7 +783,7 @@ static void _cbWeatherMenu(WM_MESSAGE * pMsg) {
     //
     // Initialization of 'WeatherWeather'
     //
-    hItem = IMAGE_CreateEx(8, 50, 32, 32, hWin, WM_CF_SHOW, 0, GUI_ID_IMAGE0);
+    //hItem = IMAGE_CreateEx(8, 50, 32, 32, hWin, WM_CF_SHOW, 0, GUI_ID_IMAGE0);
     //pData = _GetImageById(ID_IMAGE_0_IMAGE_0, &FileSize);
     //IMAGE_SetBMP(hItem, pData, FileSize);
     //
@@ -789,7 +791,9 @@ static void _cbWeatherMenu(WM_MESSAGE * pMsg) {
     //
     hTempF2 = TEXT_CreateEx(128, 100, 128, 60, hWin, WM_CF_SHOW, 0, GUI_ID_TEXT0, NULL);
     TEXT_SetFont(hTempF2, GUI_FONT_32B_1);
-    TEXT_SetText(hTempF2, ".C Feel");
+    sprintf(s_buf3a, "%s", ".C Feels");
+    s_buf3a[0] = 0xB0;
+    TEXT_SetText(hTempF2, s_buf3a);
     TEXT_SetTextAlign(hTempF2, GUI_TA_LEFT | GUI_TA_VCENTER);
     TEXT_SetTextColor(hTempF2, GUI_MAKE_COLOR(0x00000000));
     //
@@ -811,6 +815,7 @@ static void _cbWeatherMenu(WM_MESSAGE * pMsg) {
         WM_CreateTimer(hWin, 2, 60000, 0);
     break;
     case WM_TIMER:
+        // FIXME
         printf("### g_au8CITY=%s ###\n", g_au8CITY);
         TEXT_SetText(hTextWeatherCity, g_au8CITY);
 #if 1
@@ -925,7 +930,7 @@ static void _cbWeatherMenu(WM_MESSAGE * pMsg) {
             else
             {
                 s_buf3a[j] = s_buf3[i];
-                if (s_buf3a[j] == 0x2E)
+                if ((s_buf3a[j] == 0x2E) || (s_buf3a[j] == 0x20))
                 {
                     s_buf3a[j] = 0x00;
                     TEXT_SetText(hTemp1, s_buf3a);
@@ -942,6 +947,29 @@ static void _cbWeatherMenu(WM_MESSAGE * pMsg) {
                     j++;
             }
         }
+        if ((s_buf3[i] == 0x20) && (s_buf3[i + 1] == 0xC2) && (s_buf3[i + 2] == 0xB0) && (s_buf3[i + 3] == 0x43))
+        {
+            TEXT_GetText(hTemp2, s_buf3a, 16);
+            j = 2;
+            s_buf3a[j] = ' ';
+            j++;
+            s_buf3a[j] = 'F';
+            j++;
+            s_buf3a[j] = 'e';
+            j++;
+            s_buf3a[j] = 'e';
+            j++;
+            s_buf3a[j] = 'l';
+            j++;
+            s_buf3a[j] = 's';
+            j++;
+            s_buf3a[j] = 0x00;
+            TEXT_SetText(hTempF2, s_buf3a);
+            TEXT_GetText(hTemp1, s_buf3a, 16);
+            TEXT_SetText(hTempF1, s_buf3a);
+        }
+        else
+        {
         i=i+2;
         j = 0;
         for (; i < 2 * 1024; i++)
@@ -974,6 +1002,8 @@ static void _cbWeatherMenu(WM_MESSAGE * pMsg) {
                     j++;
                     s_buf3a[j] = 'l';
                     j++;
+                    s_buf3a[j] = 's';
+                    j++;
                     s_buf3a[j] = 0x00;
                     TEXT_SetText(hTempF2, s_buf3a);
                     break;
@@ -981,6 +1011,7 @@ static void _cbWeatherMenu(WM_MESSAGE * pMsg) {
                 else
                     j++;
             }
+        }
         }
 #endif
         for (; i < 2 * 1024; i++)
@@ -1008,40 +1039,124 @@ static void _cbWeatherMenu(WM_MESSAGE * pMsg) {
             }
         }
         i=i+17;
-        j = 0;
+        j = i;
         for (; i < 2 * 1024; i++)
         {
             if (s_buf3[i] == 0x0A)
             {
-                s_buf3a[j] = 0x00;
+                //s_buf3a[j] = 0x00;
+                j--;
+                while (j != 0)
+                {
+                    if (s_buf3[j] == 0x20)
+                    {
+                        j--;
+                    }
+                    else
+                    {
+                        if ((s_buf3[j] == 0x6D) && (s_buf3[j - 1] == 0x6B) && (s_buf3[j - 2] == 0x20))
+                            break;
+                    }
+                }
+                j-=3;
+                while (j != 0)
+                {
+                    if (s_buf3[j] != 0x20)
+                    {
+                        j--;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                j++;
+                k = 0;
+                while(1)
+                {
+                    if (s_buf3[j] == 0x0A)
+                    {
+                        s_buf3a[k] = 0x00;
+                        break;
+                    }
+                    else
+                    {
+                        s_buf3a[k] = s_buf3[j];
+                        k++;
+                        j++;
+                    }
+                }
                 printf("### 2=%s ###\n", s_buf3a);
                 break;
             }
-            else
-            {
-                s_buf3a[j] = s_buf3[i];
-                j++;
-            }
+            //else
+            //{
+                //s_buf3a[j] = s_buf3[i];
+                //j++;
+            //}
+            j++;
         }
         i=i+17;
-        j = 0;
+        j = i;
         for (; i < 2 * 1024; i++)
         {
             if (s_buf3[i] == 0x0A)
             {
-                s_buf3a[j] = 0x00;
+                //s_buf3a[j] = 0x00;
+                j--;
+                while (j != 0)
+                {
+                    if (s_buf3[j] == 0x20)
+                    {
+                        j--;
+                    }
+                    else
+                    {
+                        if ((s_buf3[j] == 0x6D) && (s_buf3[j - 1] == 0x6D) && (s_buf3[j - 2] == 0x20))
+                            break;
+                    }
+                }
+                j-=3;
+                while (j != 0)
+                {
+                    if (s_buf3[j] != 0x20)
+                    {
+                        j--;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                j++;
+                k = 0;
+                while(1)
+                {
+                    if (s_buf3[j] == 0x0A)
+                    {
+                        s_buf3a[k] = 0x00;
+                        break;
+                    }
+                    else
+                    {
+                        s_buf3a[k] = s_buf3[j];
+                        k++;
+                        j++;
+                    }
+                }
                 printf("### 3=%s ###\n", s_buf3a);
                 break;
             }
-            else
-            {
-                s_buf3a[j] = s_buf3[i];
-                j++;
-            }
+            //else
+            //{
+                //s_buf3a[j] = s_buf3[i];
+                //j++;
+            //}
+            j++;
         }
 #endif
         //memset(s_buf3, 0x00, 2 * 1024);
-        sprintf(g_au8CITYWeather, "curl http://wttr.in/%s_0q.png --output /mnt/png/w1.png", g_au8CITY);
+        sprintf(g_au8CITYWeather, "curl http://wttr.in/%s_0q.png --output /tmp/w1.png", g_au8CITY);
         //pstream = popen("curl http://wttr.in/hsinchu_0q.png --output /mnt/png/w1.png", "r");
         pstream = popen(g_au8CITYWeather, "r");
         //fread(s_buf3, 1, 2 * 1024, pstream);
@@ -1049,14 +1164,14 @@ static void _cbWeatherMenu(WM_MESSAGE * pMsg) {
         pclose(pstream);
 
         //memset(s_buf3, 0x00, 2 * 1024);
-        sprintf(g_au8CITYWeather, "curl http://wttr.in/%s_3Fq.png --output /mnt/png/w2.png", g_au8CITY);
+        sprintf(g_au8CITYWeather, "curl http://wttr.in/%s_3Fq.png --output /tmp/w2.png", g_au8CITY);
         //pstream = popen("curl http://wttr.in/hsinchu_3Fq.png --output /mnt/png/w2.png", "r");
         pstream = popen(g_au8CITYWeather, "r");
         //fread(s_buf3, 1, 2 * 1024, pstream);
         //printf("### %s ###\n", s_buf3);
         pclose(pstream);
 
-        FileSize = NVT_Load_File("/mnt/png/w1.png", s_au8WeatherWeather);
+        FileSize = NVT_Load_File("/tmp/w1.png", s_au8WeatherWeather);
         IMAGE_SetPNG(hWinWeatherWeather, s_au8WeatherWeather, FileSize);
         //WM_InvalidateRect(hWin, &s_Rect);
         //WM_RestartTimer(pMsg->Data.v, 600000);
@@ -1207,7 +1322,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     TEXT_SetFont(hItem, GUI_FONT_32B_1);
     TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
     TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00000000));
-    TEXT_SetText(hItem, ".C");
+    TEXT_SetText(hItem, "");
     //
     // Initialization of 'IP1'
     //
@@ -1225,6 +1340,8 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
     TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00000000));
     // USER START (Optionally insert additional code for further widget initialization)
+    sprintf(g_au8CITY, "%s", "hsinchu");
+
     hTempMenu = WM_CreateWindowAsChild(8, 480, 256, 256, pMsg->hWin, WM_CF_SHOW | WM_CF_STAYONTOP, _cbTempMenu, 0);
     hDateMenu = WM_CreateWindowAsChild(272, 480, 256, 256, pMsg->hWin, WM_CF_SHOW | WM_CF_STAYONTOP, _cbDateMenu, 0);
     hWeatherMenu = WM_CreateWindowAsChild(536, 480, 256, 256, pMsg->hWin, WM_CF_SHOW | WM_CF_STAYONTOP, _cbWeatherMenu, 0);
@@ -1239,6 +1356,9 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_1);
         BUTTON_SetSkin(hItem, _ButtonSkin);
         BUTTON_SetUserData(hItem, &i, sizeof(i));
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_1);
+        TEXT_SetText(hItem, s_achT2);
 
     // USER END
     break;
@@ -1396,37 +1516,38 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
                 memset(s_buf0, 0x00, 1024);
                 pstream = popen("wpa_cli -i wlan0 signal_poll|grep RSSI=|cut -f2 -d=", "r");
                 fread(s_buf0, 1, 1024, pstream);
-                printf("### RSSI=%s ###\n", s_buf0);
+                printf("### RSSI=%s ", s_buf0);
                 pclose(pstream);
 
                 if (s_buf0[1] <= 0x34)
                 {
-                    printf("3 %x\n", s_buf0[1]);
+                    printf("3 ");
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_2);
                     FileSize = NVT_Load_File("/mnt/png/wifi_3.png", s_au8WiFi);
                     IMAGE_SetPNG(hItem, s_au8WiFi, FileSize);
                 }
                 else if (s_buf0[1] <= 0x36)
                 {
-                    printf("2 %x\n", s_buf0[1]);
+                    printf("2 ");
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_2);
                     FileSize = NVT_Load_File("/mnt/png/wifi_2.png", s_au8WiFi);
                     IMAGE_SetPNG(hItem, s_au8WiFi, FileSize);
                 }
                 else if (s_buf0[1] <= 0x38)
                 {
-                    printf("1 %x\n", s_buf0[1]);
+                    printf("1 ");
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_2);
                     FileSize = NVT_Load_File("/mnt/png/wifi_1.png", s_au8WiFi);
                     IMAGE_SetPNG(hItem, s_au8WiFi, FileSize);
                 }
                 else
                 {
-                    printf("0 %x\n", s_buf0[1]);
+                    printf("0 ");
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_2);
                     FileSize = NVT_Load_File("/mnt/png/wifi_0.png", s_au8WiFi);
                     IMAGE_SetPNG(hItem, s_au8WiFi, FileSize);
                 }
+                printf("###\n");
             }
             if (SettingEthernetFlag == 0)
             {
@@ -1460,7 +1581,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_3);
                 TEXT_SetText(hItem, s_buf0);
             }
-            #if 1 // FIXME
+            #if 0 // FIXME
             memset(g_buf0, 0x00, 4*1024);
             pstream = popen("wpa_cli -i wlan0 scan_results", "r");
             fread(g_buf0, 1, 4*1024, pstream);

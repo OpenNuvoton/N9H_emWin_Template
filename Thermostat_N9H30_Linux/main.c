@@ -365,7 +365,7 @@ __RECONNECT_WIFI__:
 
                 sprintf(s_acTemp, "ctrl_interface=/var/run/wpa_supplicant\nap_scan=1\n\nnetwork={\n  ssid=\"%s\"\n  key_mgmt=WPA-PSK\n  proto=WPA2\n  psk=\"%s\"\n}\n\0", g_chSSID, g_chPSK);
 
-                pstream = fopen("/mnt/conf/wpa_supplicant.conf", "wb");
+                pstream = fopen("/tmp/wpa_supplicant.conf", "wb");
                 fwrite(s_acTemp, 1, strlen(s_acTemp), pstream);
                 fclose(pstream);
                 i = l = k = 0;

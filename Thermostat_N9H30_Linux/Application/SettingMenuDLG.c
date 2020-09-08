@@ -129,7 +129,7 @@ static WM_HWIN s_hKeyPad;
 
 char g_au8CITY[256];
 
-extern char g_buf0[];
+char g_buf0[4 * 1024];
 
 static char buf[1024];
 
@@ -300,6 +300,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
   // USER START (Optionally insert additional variables)
     int i, j, k;
     WM_MESSAGE     Message;
+    FILE *pstream;
 
   // USER END
 
@@ -324,106 +325,9 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     //
     hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_0);
     DROPDOWN_SetFont(hItem, GUI_FONT_32B_ASCII);
-    //DROPDOWN_AddString(hItem, "Select SSID");
-    i = 49;
-    for (k=0; k<20; k++)
-    {
-    for (; i<1024; i++)
-    {
-        if (g_buf0[i] != 0x09)
-        {
-            printf("1 %c", g_buf0[i]);
-            continue;
-        }
-        else
-            break;
-    }
-    for (; i<1024; i++)
-    {
-        if (g_buf0[i] == 0x09)
-        {
-            printf("2 %c", g_buf0[i]);
-            continue;
-        }
-        else
-            break;
-    }
-    for (; i<1024; i++)
-    {
-        if (g_buf0[i] != 0x09)
-        {
-            printf("3 %c", g_buf0[i]);
-            continue;
-        }
-        else
-            break;
-    }
-    for (; i<1024; i++)
-    {
-        if (g_buf0[i] == 0x09)
-        {
-            printf("4 %c", g_buf0[i]);
-            continue;
-        }
-        else
-            break;
-    }
-    for (; i<1024; i++)
-    {
-        if (g_buf0[i] != 0x09)
-        {
-            printf("5 %c", g_buf0[i]);
-            continue;
-        }
-        else
-            break;
-    }
-    for (; i<1024; i++)
-    {
-        if (g_buf0[i] == 0x09)
-        {
-            printf("6 %c", g_buf0[i]);
-            continue;
-        }
-        else
-            break;
-    }
-    for (; i<1024; i++)
-    {
-        if (g_buf0[i] != 0x09)
-        {
-            printf("7 %c", g_buf0[i]);
-            continue;
-        }
-        else
-            break;
-    }
-    for (; i<1024; i++)
-    {
-        if (g_buf0[i] == 0x09)
-        {
-            printf("8 %c", g_buf0[i]);
-            continue;
-        }
-        else
-            break;
-    }
-    j = 0;
-    for (; i<1024; i++)
-    {
-        if (g_buf0[i] != 0x09)
-            buf[j] = g_buf0[i];
-        else
-            break;
-        if (buf[j] == 0x0A)
-        {
-            buf[j] = 0x00;
-            break;
-        }
-        j++;
-    }
-    DROPDOWN_AddString(hItem, buf);
-    }
+    DROPDOWN_AddString(hItem, "Select SSID");
+    DROPDOWN_SetAutoScroll(hItem, 1);
+    DROPDOWN_SetScrollbarWidth(hItem, 32);
     //
     // Initialization of 'SettingPWD'
     //
@@ -449,9 +353,9 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     //
     // Initialization of 'CITY2'
     //
-    sprintf(g_au8CITY, "%s", "hsinchu");
+    //sprintf(g_au8CITY, "%s", "hsinchu");
     hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_1);
-    DROPDOWN_AddString(hItem, g_au8CITY);
+    DROPDOWN_AddString(hItem, "hsinchu");
     DROPDOWN_AddString(hItem, "taipei");
     DROPDOWN_AddString(hItem, "SHENGZHEN");
     DROPDOWN_SetFont(hItem, GUI_FONT_32B_ASCII);
@@ -560,6 +464,121 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
     TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00000000));
     // USER START (Optionally insert additional code for further widget initialization)
+        #if 1 // FIXME
+        memset(g_buf0, 0x00, 4*1024);
+        pstream = popen("wpa_cli -i wlan0 scan", "r");
+        fread(g_buf0, 1, 4*1024, pstream);
+        printf("### sr=%s ###\n", g_buf0);
+        pclose(pstream);
+        memset(g_buf0, 0x00, 4*1024);
+        pstream = popen("wpa_cli -i wlan0 scan_results", "r");
+        fread(g_buf0, 1, 4*1024, pstream);
+        printf("### sr=%s ###\n", g_buf0);
+        pclose(pstream);
+        #endif
+        #if 1 // FIXME
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_0);
+        i = 49;
+        for (k=0; k<20; k++)
+        {
+        for (; i<1024; i++)
+        {
+            if (g_buf0[i] != 0x09)
+            {
+                //printf("1 %c", g_buf0[i]);
+                continue;
+            }
+            else
+                break;
+        }
+        for (; i<1024; i++)
+        {
+            if (g_buf0[i] == 0x09)
+            {
+                //printf("2 %c", g_buf0[i]);
+                continue;
+            }
+            else
+                break;
+        }
+        for (; i<1024; i++)
+        {
+            if (g_buf0[i] != 0x09)
+            {
+                //printf("3 %c", g_buf0[i]);
+                continue;
+            }
+            else
+                break;
+        }
+        for (; i<1024; i++)
+        {
+            if (g_buf0[i] == 0x09)
+            {
+                //printf("4 %c", g_buf0[i]);
+                continue;
+            }
+            else
+                break;
+        }
+        for (; i<1024; i++)
+        {
+            if (g_buf0[i] != 0x09)
+            {
+                //printf("5 %c", g_buf0[i]);
+                continue;
+            }
+            else
+                break;
+        }
+        for (; i<1024; i++)
+        {
+            if (g_buf0[i] == 0x09)
+            {
+                //printf("6 %c", g_buf0[i]);
+                continue;
+            }
+            else
+                break;
+        }
+        for (; i<1024; i++)
+        {
+            if (g_buf0[i] != 0x09)
+            {
+                //printf("7 %c", g_buf0[i]);
+                continue;
+            }
+            else
+                break;
+        }
+        for (; i<1024; i++)
+        {
+            if (g_buf0[i] == 0x09)
+            {
+                //printf("8 %c", g_buf0[i]);
+                continue;
+            }
+            else
+                break;
+        }
+        j = 0;
+        for (; i<1024; i++)
+        {
+            if (g_buf0[i] != 0x09)
+                buf[j] = g_buf0[i];
+            else
+                break;
+            if (buf[j] == 0x0A)
+            {
+                buf[j] = 0x00;
+                break;
+            }
+            j++;
+        }
+        DROPDOWN_AddString(hItem, buf);
+        }
+        #endif
+
         i = 1;
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_0);
         BUTTON_SetSkin(hItem, _ButtonSkin);
