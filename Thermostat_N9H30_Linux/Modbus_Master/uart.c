@@ -253,7 +253,7 @@ void RS485_TX_Data(int length, uint8_t *pData)
     if ( rev1 != 1 )
     {
         printf("fail write %d\n",rev1);
-	continue;
+	break;
     }
     pData++;
     i++;
@@ -493,6 +493,7 @@ int rs485_main(void)
 {
   char *dev[10]={"/dev/ttyS6"};
   unsigned int i;
+    uint32_t flags;
 
   printf("\n RS485 for UART 6\n");
 
@@ -502,6 +503,11 @@ int rs485_main(void)
       return -1;
   }
 	g_portfd = (int) fd[0];
+
+// Ray added write with nonblocking
+  flags = fcntl(g_portfd,F_GETFL);
+  flags = O_NONBLOCK;
+  fcntl(g_portfd, F_SETFL, flags);
   //pthread_create(&threads[0], NULL, process1, (void*)(fd[0]));
   //pthread_join(threads[0], NULL);
 		   

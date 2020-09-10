@@ -561,8 +561,8 @@ uint8_t ModbusMasterTransaction(uint8_t u8MBFunction)
   uint8_t u8BytesLeft = 8;
   uint8_t u8MBStatus = ku8MBSuccess;
   uint32_t u32CurTime;
-  uint32_t flags;
   uint8_t RxBuffer[32];
+  uint32_t flags;
 
   
   // assemble Modbus Request Application Data Unit
@@ -653,17 +653,18 @@ uint8_t ModbusMasterTransaction(uint8_t u8MBFunction)
   u8ModbusADU[u8ModbusADUSize++] = highByte(u16CRC);
   u8ModbusADU[u8ModbusADUSize] = 0;
 
-//  sysprintf("input -->");
+//  printf("input -->");
 //  for (i=0; i<u8ModbusADUSize;i++)
-//      sysprintf(" %x,", u8ModbusADU[i]);
-//  sysprintf("\n");
+//      printf(" %x,", u8ModbusADU[i]);
+//  printf("\n");
+#if 0
 // write data into RS485
-
-// Ray added write with blocking
+// Ray added write with nonblocking
   flags = fcntl(g_portfd,F_GETFL);
-  flags &= ~O_NONBLOCK;
+  flags = O_NONBLOCK;
   fcntl(g_portfd, F_SETFL, flags);
- 
+#endif
+
   RS485_TX_Data(u8ModbusADUSize, u8ModbusADU);
 	
   for (i=0; i<u8ModbusADUSize;i++)
@@ -674,15 +675,15 @@ uint8_t ModbusMasterTransaction(uint8_t u8MBFunction)
   // loop until we run out of time or bytes, or an error occurs
   u32StartTime = (uint32_t)GetTime(); 
 #if 0
-  // Ray added read with nonblocking
+  // Ray added read with blocking
   flags = fcntl(g_portfd,F_GETFL);
-  flags |= O_NONBLOCK;
+  flags &= ~O_NONBLOCK;
   fcntl(g_portfd, F_SETFL, flags);
 #endif
   while (u8BytesLeft && !u8MBStatus)
   {
 //    if (!(inpw(REG_UART_FSR) & 0x00004000)) 
-    if ( read(g_portfd,RxBuffer,1) != 0 )
+    if ( read(g_portfd,RxBuffer,1) > 0 )
     {
       u8ModbusADU[u8ModbusADUSize++] = RxBuffer[0];
       u8BytesLeft--;
@@ -733,10 +734,10 @@ uint8_t ModbusMasterTransaction(uint8_t u8MBFunction)
     }
 
   }
-//  sysprintf("output <-- ");
+//  printf("output <-- ");
 //  for (i=0; i<u8ModbusADUSize;i++)
-//      sysprintf(" %x,", u8ModbusADU[i]);
-//  sysprintf("\n");
+//      printf(" %x,", u8ModbusADU[i]);
+//  printf("\n");
   // verify response is large enough to inspect further
   if (!u8MBStatus && u8ModbusADUSize >= 5)
   {
@@ -808,7 +809,7 @@ void ModbusDisplayMessage(uint8_t *u8ModbusADU, uint8_t u8ModbusADUSize)
   uint8_t number;
   uint8_t *pu8Cur;
   pu8Cur = (uint8_t *)&u8ModbusADU[0];
-//  sysprintf("\n\n");
+//  printf("\n\n");
   if ( *pu8Cur != _u8MBSlave )
   {
     if ( *pu8Cur == 0xF8 )
@@ -879,7 +880,7 @@ void ModbusDisplayMessage(uint8_t *u8ModbusADU, uint8_t u8ModbusADUSize)
       }
       break;
   }
-//   sysprintf("\n\n");
+//   printf("\n\n");
 }
 
 extern char g_Menu2Temp1Voltage[20];
@@ -902,7 +903,7 @@ void DispMsg_PZEM003(uint8_t *pu8Cur, uint8_t number)
     {
       div = value/100;
       rem = value % 100;
-//          sysprintf("Voltage = %u.%02uV\n",div, rem);
+//          printf("Voltage = %u.%02uV\n",div, rem);
             sprintf(g_Menu2Temp1Voltage, "Voltage:%u.%02uV", div, rem);
       count++;
     }
@@ -910,7 +911,7 @@ void DispMsg_PZEM003(uint8_t *pu8Cur, uint8_t number)
     {
       div = value/100;
       rem = value % 100;
-//          sysprintf("Current = %u.%02uA\n",div, rem);
+//          printf("Current = %u.%02uA\n",div, rem);
             sprintf(g_Menu2Temp1Current, "Current:%u.%02uA", div, rem);
       count++;
     }
@@ -931,13 +932,13 @@ void DispMsg_PZEM003(uint8_t *pu8Cur, uint8_t number)
     {
       div = u32val/10;
       rem = u32val % 10;
-//          sysprintf("Power = %u.%01uW\n",div, rem);
+//          printf("Power = %u.%01uW\n",div, rem);
             sprintf(g_Menu2Temp1Power, "Power:%u.%01uW", div, rem);
       count++;
     }
     else if ( count == 3 )
     {
-//          sysprintf("Energy = %uWh\n",u32val);
+//          printf("Energy = %uWh\n",u32val);
             sprintf(g_Menu2Temp1Energy, "Energy:%uWh", u32val);
       count++;
     }
@@ -950,12 +951,12 @@ void DispMsg_PZEM003(uint8_t *pu8Cur, uint8_t number)
     value = (hibyte << 8) | lobyte;
     if ( count == 4 )
     {
-//          sysprintf("High voltage alarm status = %04x\n", value);
+//          printf("High voltage alarm status = %04x\n", value);
       count++;
     }
     else if ( count == 5 )
     {
-//          sysprintf("Low voltage alarm status = %04x\n", value);
+//          printf("Low voltage alarm status = %04x\n", value);
       count++;
     }
   }
@@ -965,10 +966,7 @@ int c_div, c_rem, f_div, f_rem;
 
 void DispMsg_Temperature(uint8_t *pu8Cur, uint8_t number)
 {
-
     uint16_t hibyte, lobyte;//, c_div, c_rem, f_div, f_rem;
-
-
   hibyte = *pu8Cur++;
   lobyte = *pu8Cur++;
   c_temp = (hibyte << 8) | lobyte;
@@ -980,6 +978,6 @@ void DispMsg_Temperature(uint8_t *pu8Cur, uint8_t number)
   c_rem = abs(c_temp) % 100;
   f_div = f_temp/100;
   f_rem = abs(f_temp) % 100;
-//  sysprintf("Temperature is %d.%02d Celsius, %d.%02d Fahrenheit\r\n", c_div,c_rem, f_div, f_rem);
+//  printf("Temperature is %d.%02d Celsius, %d.%02d Fahrenheit\r\n", c_div,c_rem, f_div, f_rem);
 
 }

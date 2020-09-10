@@ -243,7 +243,7 @@ RS232/485 (via RTU protocol).
     static const uint8_t ku8MBResetEnergyRegister	 = 0x42; // Reset energy register
     static const uint8_t ku8MBCalibrationRegister	 = 0x41; // Calibration
     // Modbus timeout [milliseconds]
-    static const uint16_t ku16MBResponseTimeout          = 5000; //Modbus timeout [milliseconds]
+    static const uint16_t ku16MBResponseTimeout          = 1000; //Modbus timeout [milliseconds]
 #else
     // Modbus function codes for bit access
     static uint8_t ku8MBReadCoils                  = 0x01; ///< Modbus function 0x01 Read 
@@ -263,7 +263,7 @@ RS232/485 (via RTU protocol).
     static uint8_t ku8MBResetEnergyRegister	 = 0x42; // Reset energy register
     static uint8_t ku8MBCalibrationRegister	 = 0x41; // Calibration
     // Modbus timeout [milliseconds]
-    static uint16_t ku16MBResponseTimeout          = 5000; //Modbus timeout [milliseconds]
+    static uint16_t ku16MBResponseTimeout          = 1000; //Modbus timeout [milliseconds]
 #endif    
     // master function that conducts Modbus transactions
     uint8_t ModbusMasterTransaction(uint8_t u8MBFunction);

@@ -1588,24 +1588,21 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
             printf("### sr=%s ###\n", g_buf0);
             pclose(pstream);
             #endif
-            if (SettingModbusFlag == 2)
-            {
-                SettingModbusFlag = 2;
-                ReadDevice(2);
-                sprintf(s_achT1, "%02d", c_div);
-                sprintf(s_achT2, ".%01d", c_rem);
-                s_achT2[2] = 0xB0;
-                s_achT2[3] = 'C';
-                s_achT2[4] = 0;
-                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
-                TEXT_SetText(hItem, s_achT1);
-                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_1);
-                TEXT_SetText(hItem, s_achT2);
-            }
             if (SettingModbusFlag == 1)
             {
-                SettingModbusFlag = 2;
-                OpenDevice(2);
+                if (OpenDevice(2) == 0)
+                {
+                    ReadDevice(2);
+                    sprintf(s_achT1, "%02d", c_div);
+                    sprintf(s_achT2, ".%01d", c_rem);
+                    s_achT2[2] = 0xB0;
+                    s_achT2[3] = 'C';
+                    s_achT2[4] = 0;
+                    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
+                    TEXT_SetText(hItem, s_achT1);
+                    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_1);
+                    TEXT_SetText(hItem, s_achT2);
+                }
             }
         }
             break;

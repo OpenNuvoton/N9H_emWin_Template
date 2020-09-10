@@ -248,7 +248,7 @@ static int _ButtonSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
             NVT_Load_File2("/mnt/dta/on1.dta", 0, 0);
         else if (Index == 3)
         {
-            if (SettingWiFiFlag == 0)
+            if (SettingWiFiFlag == 0) // FIXME
                 NVT_Load_File2("/mnt/dta/off1.dta", 0, 0);
             else
                 NVT_Load_File2("/mnt/dta/on1.dta", 0, 0);
@@ -265,17 +265,14 @@ static int _ButtonSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
         }
         else if (Index == 5)
         {
-            if ((SettingModbusFlag == 0) || (SettingModbusFlag == 3)) // FIXME
-            {
-                SettingModbusFlag = 0;
+            if (SettingModbusFlag == 0)
                 NVT_Load_File2("/mnt/dta/off1.dta", 0, 0);
-            }
             else
                 NVT_Load_File2("/mnt/dta/on1.dta", 0, 0);
         }
         else if (Index == 6)
         {
-            if (SettingVNCFlag == 0)
+            if (SettingVNCFlag == 0) // FIXME
                 NVT_Load_File2("/mnt/dta/off1.dta", 0, 0);
             else
                 NVT_Load_File2("/mnt/dta/on1.dta", 0, 0);
