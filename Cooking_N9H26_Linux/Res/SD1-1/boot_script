@@ -17,6 +17,10 @@ fi
 
 
 ##### run user's boot procedure #####
+cd /sys/class/gpio/
+echo 0 > /sys/class/gpio/export
+echo "out" > /sys/class/gpio/gpio0/direction
+echo 1 > /sys/class/gpio/gpio0/value
 cd /mnt/nand1-1
 ./CookingDemo &
 
