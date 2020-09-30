@@ -137,6 +137,9 @@ extern U8 g_chSSID[1024];
 extern U8 g_chPSK[1024];
 int g_SettingWiFiFlag;
 
+extern U8 g_au8WiFiList[];
+extern int g_SettingEthernetFlag;
+
 // USER END
 
 /*********************************************************************
@@ -154,22 +157,22 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
   { BUTTON_CreateIndirect, "SettingConnect", ID_BUTTON_1, 700, 0, 100, 100, 0, 0x0, 2 },
   { DROPDOWN_CreateIndirect, "CITY2", ID_DROPDOWN_1, 0, 129, 200, 370, 0, 0x0, 0 },
   { TEXT_CreateIndirect, "CITY", ID_TEXT_2, 0, 90, 200, 32, 0, 0x64, 0 },
-  { TEXT_CreateIndirect, "WiFi", ID_TEXT_3, 0, 200, 200, 32, 0, 0x64, 0 },
-  { BUTTON_CreateIndirect, "WiFi2", ID_BUTTON_2, 50, 228, 98, 59, 0, 0x0, 3 },
-  { TEXT_CreateIndirect, "Ethernet", ID_TEXT_4, 0, 297, 200, 32, 0, 0x64, 0 },
-  { BUTTON_CreateIndirect, "Ethernet2", ID_BUTTON_3, 50, 326, 98, 59, 0, 0x0, 4 },
-  { TEXT_CreateIndirect, "Modbus", ID_TEXT_5, 292, 200, 200, 32, 0, 0x64, 0 },
-  { BUTTON_CreateIndirect, "Modbus2", ID_BUTTON_4, 340, 228, 98, 59, 0, 0x0, 5 },
-  { TEXT_CreateIndirect, "VNC", ID_TEXT_6, 292, 297, 200, 32, 0, 0x64, 0 },
-  { BUTTON_CreateIndirect, "VNC2", ID_BUTTON_5, 340, 326, 98, 59, 0, 0x0, 6 },
-  { TEXT_CreateIndirect, "Text", ID_TEXT_7, 153, 243, 60, 32, 0, 0x64, 0 },
-  { TEXT_CreateIndirect, "Text", ID_TEXT_8, 0, 243, 50, 32, 0, 0x64, 0 },
-  { TEXT_CreateIndirect, "Text", ID_TEXT_9, 154, 344, 60, 32, 0, 0x64, 0 },
-  { TEXT_CreateIndirect, "Text", ID_TEXT_10, 0, 340, 50, 32, 0, 0x64, 0 },
-  { TEXT_CreateIndirect, "Text", ID_TEXT_11, 443, 243, 60, 32, 0, 0x64, 0 },
-  { TEXT_CreateIndirect, "Text", ID_TEXT_12, 287, 243, 50, 32, 0, 0x64, 0 },
-  { TEXT_CreateIndirect, "Text", ID_TEXT_13, 443, 344, 60, 32, 0, 0x64, 0 },
-  { TEXT_CreateIndirect, "Text", ID_TEXT_14, 287, 340, 50, 32, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "WiFi", ID_TEXT_3, 200, 200, 200, 32, 0, 0x64, 0 },
+  { BUTTON_CreateIndirect, "WiFi2", ID_BUTTON_2, 250, 228, 98, 59, 0, 0x0, 3 },
+  { TEXT_CreateIndirect, "Ethernet", ID_TEXT_4, 200, 297, 200, 32, 0, 0x64, 0 },
+  { BUTTON_CreateIndirect, "Ethernet2", ID_BUTTON_3, 250, 326, 98, 59, 0, 0x0, 4 },
+  { TEXT_CreateIndirect, "Modbus", ID_TEXT_5, 492, 200, 200, 32, 0, 0x64, 0 },
+  { BUTTON_CreateIndirect, "Modbus2", ID_BUTTON_4, 540, 228, 98, 59, 0, 0x0, 5 },
+  { TEXT_CreateIndirect, "VNC", ID_TEXT_6, 492, 297, 200, 32, 0, 0x64, 0 },
+  { BUTTON_CreateIndirect, "VNC2", ID_BUTTON_5, 540, 326, 98, 59, 0, 0x0, 6 },
+  { TEXT_CreateIndirect, "Text", ID_TEXT_7, 353, 243, 60, 32, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text", ID_TEXT_8, 200, 243, 50, 32, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text", ID_TEXT_9, 354, 344, 60, 32, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text", ID_TEXT_10, 200, 340, 50, 32, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text", ID_TEXT_11, 643, 243, 60, 32, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text", ID_TEXT_12, 487, 243, 50, 32, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text", ID_TEXT_13, 643, 344, 60, 32, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text", ID_TEXT_14, 487, 340, 50, 32, 0, 0x64, 0 },
   // USER START (Optionally insert additional widgets)
   // USER END
 };
@@ -248,18 +251,15 @@ static int _ButtonSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
             NVT_Load_File2("/mnt/dta/on1.dta", 0, 0);
         else if (Index == 3)
         {
-            if (SettingWiFiFlag == 0) // FIXME
+            if (SettingWiFiFlag == 0)
                 NVT_Load_File2("/mnt/dta/off1.dta", 0, 0);
             else
                 NVT_Load_File2("/mnt/dta/on1.dta", 0, 0);
         }
         else if (Index == 4)
         {
-            if ((SettingEthernetFlag == 0) || (SettingEthernetFlag == 3)) // FIXME
-            {
-                SettingEthernetFlag = 0;
+            if (SettingEthernetFlag == 0)
                 NVT_Load_File2("/mnt/dta/off1.dta", 0, 0);
-            }
             else
                 NVT_Load_File2("/mnt/dta/on1.dta", 0, 0);
         }
@@ -295,7 +295,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
   int          NCode;
   int          Id;
   // USER START (Optionally insert additional variables)
-    int i, j, k;
+    int i, j, k, i32g_buf0Size;
     WM_MESSAGE     Message;
     FILE *pstream;
 
@@ -461,120 +461,26 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
     TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00000000));
     // USER START (Optionally insert additional code for further widget initialization)
-        #if 1 // FIXME
-        memset(g_buf0, 0x00, 4*1024);
-        pstream = popen("wpa_cli -i wlan0 scan", "r");
-        fread(g_buf0, 1, 4*1024, pstream);
-        printf("### sr=%s ###\n", g_buf0);
-        pclose(pstream);
-        memset(g_buf0, 0x00, 4*1024);
-        pstream = popen("wpa_cli -i wlan0 scan_results", "r");
-        fread(g_buf0, 1, 4*1024, pstream);
-        printf("### sr=%s ###\n", g_buf0);
-        pclose(pstream);
-        #endif
-        #if 1 // FIXME
         hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_0);
-        i = 49;
-        for (k=0; k<20; k++)
-        {
-        for (; i<1024; i++)
-        {
-            if (g_buf0[i] != 0x09)
-            {
-                //printf("1 %c", g_buf0[i]);
-                continue;
-            }
-            else
-                break;
-        }
-        for (; i<1024; i++)
-        {
-            if (g_buf0[i] == 0x09)
-            {
-                //printf("2 %c", g_buf0[i]);
-                continue;
-            }
-            else
-                break;
-        }
-        for (; i<1024; i++)
-        {
-            if (g_buf0[i] != 0x09)
-            {
-                //printf("3 %c", g_buf0[i]);
-                continue;
-            }
-            else
-                break;
-        }
-        for (; i<1024; i++)
-        {
-            if (g_buf0[i] == 0x09)
-            {
-                //printf("4 %c", g_buf0[i]);
-                continue;
-            }
-            else
-                break;
-        }
-        for (; i<1024; i++)
-        {
-            if (g_buf0[i] != 0x09)
-            {
-                //printf("5 %c", g_buf0[i]);
-                continue;
-            }
-            else
-                break;
-        }
-        for (; i<1024; i++)
-        {
-            if (g_buf0[i] == 0x09)
-            {
-                //printf("6 %c", g_buf0[i]);
-                continue;
-            }
-            else
-                break;
-        }
-        for (; i<1024; i++)
-        {
-            if (g_buf0[i] != 0x09)
-            {
-                //printf("7 %c", g_buf0[i]);
-                continue;
-            }
-            else
-                break;
-        }
-        for (; i<1024; i++)
-        {
-            if (g_buf0[i] == 0x09)
-            {
-                //printf("8 %c", g_buf0[i]);
-                continue;
-            }
-            else
-                break;
-        }
         j = 0;
-        for (; i<1024; i++)
+        for (i = 0; i<1024; i++)
         {
-            if (g_buf0[i] != 0x09)
-                buf[j] = g_buf0[i];
-            else
+            if (g_au8WiFiList[i] == 0x00)
+            {
                 break;
-            if (buf[j] == 0x0A)
+            }
+            else if (g_au8WiFiList[i] == 0x0A)
             {
                 buf[j] = 0x00;
-                break;
+                j = 0;
+                DROPDOWN_AddString(hItem, buf);
             }
-            j++;
+            else
+            {
+                buf[j] = g_au8WiFiList[i];
+                j++;
+            }
         }
-        DROPDOWN_AddString(hItem, buf);
-        }
-        #endif
 
         i = 1;
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_0);
@@ -685,7 +591,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
             if (g_chSSID[0] == 0x00)
                 g_SettingWiFiFlag = 0;
             else
-                g_SettingWiFiFlag = 1;
+                g_SettingWiFiFlag = 2;
 
         // USER END
         break;
@@ -724,9 +630,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
       case WM_NOTIFICATION_RELEASED:
         // USER START (Optionally insert code for reacting on notification message)
             SettingWiFiFlag ^= 1;
-            #if 0 // FIXME
-            SettingWiFiFlag2 = 1;
-            #endif
+            g_SettingWiFiFlag = 0;
 
         // USER END
         break;
@@ -743,9 +647,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
       case WM_NOTIFICATION_RELEASED:
         // USER START (Optionally insert code for reacting on notification message)
             SettingEthernetFlag ^= 1;
-            #if 0 // FIXME
-            SettingEthernetFlag2 = 1;
-            #endif
+            g_SettingEthernetFlag = 0;
 
         // USER END
         break;

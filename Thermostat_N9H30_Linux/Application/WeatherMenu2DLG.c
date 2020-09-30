@@ -67,6 +67,8 @@ static const U8 _acImage_0[463] = {
 extern int g_WeatherFlag;
 static U8 s_au8WeatherWeather2[64 * 1024];
 
+extern I32 g_i32WeatherBigFlag;
+
 // USER END
 
 /*********************************************************************
@@ -130,9 +132,12 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     pData = _GetImageById(ID_IMAGE_0_IMAGE_0, &FileSize);
     IMAGE_SetBMP(hItem, pData, FileSize);
     // USER START (Optionally insert additional code for further widget initialization)
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_0);
-        FileSize = NVT_Load_File("/tmp/w2.png", s_au8WeatherWeather2);
-        IMAGE_SetPNG(hItem, s_au8WeatherWeather2, FileSize);
+        if (g_i32WeatherBigFlag == 1)
+        {
+            hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_0);
+            FileSize = NVT_Load_File("/tmp/w2.png", s_au8WeatherWeather2);
+            IMAGE_SetPNG(hItem, s_au8WeatherWeather2, FileSize);
+        }
     // USER END
     break;
   case WM_NOTIFY_PARENT:

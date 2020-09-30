@@ -175,6 +175,21 @@ extern int g_SettingWiFiFlag;
 extern int SettingEthernetFlag;
 char s_acTemp[4096];
 
+U8 g_au8Eth0IP[32];
+U8 g_au8WiFiIP[32];
+U8 g_au8WiFiSignal[8];
+
+static int s_i32WiFiFlag;
+
+U8 g_au8WiFiList[1024];
+
+extern void NVT_SetWiFiList(void);
+
+int g_SettingEthernetFlag;
+
+static int s_i32Eth0DhcpFlag;
+static int s_i32WifiDhcpFlag;
+
 void NetworkTask(void)
 {
     int i, j, k, l;
@@ -185,225 +200,175 @@ void NetworkTask(void)
     FILE *pstream_dhcp;
     FILE *pstream;
     char acTemp[4096];
+    int i32aTempSize;
 
-    usleep(10000000);
+    i32aTempSize = sizeof(acTemp);
+    printf("Network Task start %d\n", i32aTempSize);
 
-    printf("Network Task start\n");
+__RECONNECT_WIFI__:
+    memset(acTemp, 0x00, i32aTempSize);
+    pstream_wifi_status = popen("wpa_cli -i wlan0 disconnect", "r");
+    fread(acTemp, 1, i32aTempSize, pstream_wifi_status);
+    printf("### 001 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+    pclose(pstream_wifi_status);
 
-    memset(acTemp, 0x00, 40);
-    pstream_eth0 = popen("ifconfig eth0 up", "r");
-    //fread(acTemp, 1, 40, pstream_eth0);
-    usleep(1000000);
-    pclose(pstream_eth0);
+    memset(acTemp, 0x00, i32aTempSize);
+    pstream_wifi_status = popen("wpa_cli -i wlan0 terminate", "r");
+    fread(acTemp, 1, i32aTempSize, pstream_wifi_status);
+    printf("### 002 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+    pclose(pstream_wifi_status);
 
-    #if 0 // FIXME
-    memset(acTemp, 0x00, 40);
-    pstream_dhcp = popen("udhcpc -i eth0 -q", "r");
-    //fread(acTemp, 1, 40, pstream_wlan0);
-    usleep(1000000);
-    pclose(pstream_dhcp);
-    #if 0
-    memset(acTemp, 0x00, 1024);
-    pstream = popen("ifconfig eth0|grep addr:|cut -f2 -d:", "r");
-    fread(acTemp, 1, 1024, pstream);
-    printf("### addr:%s ###\n", acTemp);
-    pclose(pstream);
-    #endif
-    #endif
-
-    while (1)
-    {
-    memset(acTemp, 0x00, 40);
-    pstream_wlan0 = popen("ifconfig wlan0 up", "r");
-    //fread(acTemp, 1, 40, pstream_wlan0);
-    usleep(1000000);
+    memset(acTemp, 0x00, i32aTempSize);
+    pstream_wlan0 = popen("ifconfig wlan0 down", "r");
+    fread(acTemp, 1, i32aTempSize, pstream_wlan0);
+    printf("### 003 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
     pclose(pstream_wlan0);
 
-    memset(acTemp, 0x00, 1024);
-    pstream_wifi = popen("wpa_supplicant -D nl80211 -i wlan0 -c /mnt/conf/wpa_supplicant.conf -B", "r");
-    //fread(acTemp, 1, 1024, pstream_wifi);
-    //pclose(pstream_wifi);
-    usleep(1000000);
+    memset(acTemp, 0x00, i32aTempSize);
+    pstream_wlan0 = popen("ifconfig wlan0 up", "r");
+    fread(acTemp, 1, i32aTempSize, pstream_wlan0);
+    printf("### 004 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+    pclose(pstream_wlan0);
+
+    memset(acTemp, 0x00, i32aTempSize);
+    pstream_wifi = popen("wpa_supplicant -D nl80211 -i wlan0 -c /tmp/wpa_supplicant.conf -B", "r");
+    fread(acTemp, 1, i32aTempSize, pstream_wifi);
+    printf("### 005 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+    pclose(pstream_wifi);
 
     i = 0;
-    l = 0;
-    k = 0;
+    s_i32WiFiFlag = 0;
+    g_SettingEthernetFlag = 1;
+    g_SettingWiFiFlag = 1;
+    SettingWiFiFlag = 0;
+    s_i32Eth0DhcpFlag = 0;
+    s_i32WifiDhcpFlag = 0;
+
     while (1)
     {
-        if (SettingEthernetFlag == 1)
+        if ((SettingEthernetFlag == 1) && (g_SettingEthernetFlag == 0))
         {
-            SettingEthernetFlag = 2;
+            g_SettingEthernetFlag = 1;
 
-            memset(acTemp, 0x00, 40);
-            pstream_dhcp = popen("udhcpc -i eth0 -q", "r");
-            //fread(acTemp, 1, 40, pstream_wlan0);
-            usleep(1000000);
-            pclose(pstream_dhcp);
+            memset(acTemp, 0x00, i32aTempSize);
+            pstream_eth0 = popen("ifconfig eth0 up", "r");
+            fread(acTemp, 1, i32aTempSize, pstream_eth0);
+            printf("### 007 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+            pclose(pstream_eth0);
+
+            s_i32Eth0DhcpFlag = 1;
         }
-        memset(acTemp, 0x00, 1024);
+        else if ((SettingEthernetFlag == 0) && (g_SettingEthernetFlag == 0))
+        {
+            g_SettingEthernetFlag = 1;
+
+            memset(acTemp, 0x00, i32aTempSize);
+            pstream_eth0 = popen("ifconfig eth0 down", "r");
+            fread(acTemp, 1, i32aTempSize, pstream_eth0);
+            printf("### 013 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+            pclose(pstream_eth0);
+        }
+
+        if ((SettingWiFiFlag == 1) && (g_SettingWiFiFlag == 0))
+        {
+            goto __RECONNECT_WIFI__;
+        }
+        else if ((SettingWiFiFlag == 0) && (g_SettingWiFiFlag == 0))
+        {
+            g_SettingWiFiFlag = 1;
+
+            memset(acTemp, 0x00, i32aTempSize);
+            pstream_wifi_status = popen("wpa_cli -i wlan0 disconnect", "r");
+            fread(acTemp, 1, i32aTempSize, pstream_wifi_status);
+            printf("### 001a 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+            pclose(pstream_wifi_status);
+        
+            memset(acTemp, 0x00, i32aTempSize);
+            pstream_wifi_status = popen("wpa_cli -i wlan0 terminate", "r");
+            fread(acTemp, 1, i32aTempSize, pstream_wifi_status);
+            printf("### 002a 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+            pclose(pstream_wifi_status);
+        
+            memset(acTemp, 0x00, i32aTempSize);
+            pstream_wlan0 = popen("ifconfig wlan0 down", "r");
+            fread(acTemp, 1, i32aTempSize, pstream_wlan0);
+            printf("### 003a 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+            pclose(pstream_wlan0);
+        }
+
+        if (g_SettingWiFiFlag == 2)
+        {
+            printf("### 014 %d ###\n", g_SettingWiFiFlag);
+
+            sprintf(s_acTemp, "ctrl_interface=/var/run/wpa_supplicant\nap_scan=1\n\nnetwork={\n  ssid=\"%s\"\n  key_mgmt=WPA-PSK\n  proto=WPA2\n  psk=\"%s\"\n}\n\0", g_chSSID, g_chPSK);
+
+            pstream = fopen("/tmp/wpa_supplicant.conf", "wb");
+            fwrite(s_acTemp, 1, strlen(s_acTemp), pstream);
+            fclose(pstream);
+
+            goto __RECONNECT_WIFI__;
+        }
+
+        memset(acTemp, 0x00, i32aTempSize);
         pstream_wifi_status = popen("wpa_cli -i wlan0 status|grep wpa_state=|cut -f2 -d=", "r");
-        fread(acTemp, 1, 1024, pstream_wifi_status);
-        usleep(1000000);
-        //printf("#### %s", acTemp);
-        j = strlen(acTemp);
-        //printf("### acTemp=%d ###\n", j);
-        acTemp[j-1] = 0x00;
-        //j = strcmp("SCANNING", acTemp);
-        //printf("### j=%d ###\n", j);
-        if (strcmp("SCANNING", acTemp) == 0)
+        fread(acTemp, 1, i32aTempSize, pstream_wifi_status);
+        printf("### 015 0x%x 0x%x %d %d =%s###\n", acTemp[0], acTemp[1], i, strlen(acTemp), acTemp);
+        pclose(pstream_wifi_status);
+
+        if (strlen(acTemp) > 0)
+            acTemp[strlen(acTemp) - 1] = 0x00;
+
+        if (strcmp("COMPLETED", acTemp) == 0)
         {
-            l = k = 0;
-            printf("### %d SCANNING ###\n", i);
-            i++;
-__RECONNECT_WIFI__:
-            if (i >= 10)
+            i = 0;
+
+            if (s_i32WiFiFlag == 0)
             {
-                pclose(pstream_wifi_status);
-
-                memset(acTemp, 0x00, 40);
-                pstream_wifi_status = popen("wpa_cli -i wlan0 disconnect", "r");
-                //fread(acTemp, 1, 40, pstream_wlan0);
-                usleep(1000000);
-                pclose(pstream_wifi_status);
-
-                memset(acTemp, 0x00, 40);
-                pstream_wifi_status = popen("wpa_cli -i wlan0 terminate", "r");
-                //fread(acTemp, 1, 40, pstream_wlan0);
-                usleep(1000000);
-                pclose(pstream_wifi_status);
-
-                memset(acTemp, 0x00, 40);
-                pstream_wlan0 = popen("ifconfig wlan0 down", "r");
-                //fread(acTemp, 1, 40, pstream_wlan0);
-                usleep(1000000);
-                pclose(pstream_wlan0);
-                pclose(pstream_wifi);
-                break;
-            }
-        }
-        else if (strcmp("COMPLETED", acTemp) == 0)
-        {
-            k++;
-            if (k == 3)
-            {
-                memset(acTemp, 0x00, 40);
-                pstream_dhcp = popen("udhcpc -i wlan0 -q", "r");
-                //fread(acTemp, 1, 40, pstream_wlan0);
-                usleep(1000000);
-                pclose(pstream_dhcp);
-
-                memset(acTemp, 0x00, 128);
-                pstream_dhcp = popen("ping -c 4 8.8.8.8", "r");
-                fread(acTemp, 1, 128, pstream_dhcp);
-                pclose(pstream_dhcp);
-                if ((acTemp[0] == 0x00) || (acTemp[0] == 0x0A))
-                {
-                    i = 10;
-                    k = l = 0;
-                    goto __RECONNECT_WIFI__;
-                }
-                else
-                    printf("### ping=%s ###\n", acTemp);
-
-                memset(acTemp, 0x00, 40);
-                pstream_dhcp = popen("ntpdate tw.pool.ntp.org", "r");
-                //fread(acTemp, 1, 40, pstream_wlan0);
-                usleep(1000000);
-                pclose(pstream_dhcp);
-
-                SettingWiFiFlag = 1;
-            }
-            if ((k % 10) == 0)
-            {
-                memset(acTemp, 0x00, 128);
-                pstream_dhcp = popen("ping -c 4 8.8.8.8|grep seq", "r");
-                fread(acTemp, 1, 128, pstream_dhcp);
-                pclose(pstream_dhcp);
-                if ((acTemp[0] == 0x00) || (acTemp[0] == 0x0A))
-                {
-                    i = 10;
-                    k = l = 0;
-                    goto __RECONNECT_WIFI__;
-                }
-                else
-                    printf("### ping=%s ###\n", acTemp);
-            }
-            printf("### COMPLETED ###\n");
-            #if 0    // FIXME
-            if (SettingWiFiFlag2 == 1)
-            {
-                SettingWiFiFlag2 = 0;
-                i = 10;
-
-                goto __RECONNECT_WIFI__;
-            }
-
-            if (SettingEthernetFlag2 == 1)
-            {
-                SettingEthernetFlag2 = 0;
-
-                pstream = popen("ifconfig eth0 down", "r");
-                usleep(1000000);
-                pclose(pstream);
-            }
-            #endif
-            if (g_SettingWiFiFlag == 1)
-            {
-                g_SettingWiFiFlag = 0;
-
-                memset(acTemp, 0x00, 40);
-                pstream_wifi_status = popen("wpa_cli -i wlan0 disconnect", "r");
-                //fread(acTemp, 1, 40, pstream_wlan0);
-                usleep(1000000);
-                pclose(pstream_wifi_status);
-
-                memset(acTemp, 0x00, 40);
-                pstream_wifi_status = popen("wpa_cli -i wlan0 terminate", "r");
-                //fread(acTemp, 1, 40, pstream_wlan0);
-                usleep(1000000);
-                pclose(pstream_wifi_status);
-
-                sprintf(s_acTemp, "ctrl_interface=/var/run/wpa_supplicant\nap_scan=1\n\nnetwork={\n  ssid=\"%s\"\n  key_mgmt=WPA-PSK\n  proto=WPA2\n  psk=\"%s\"\n}\n\0", g_chSSID, g_chPSK);
-
-                pstream = fopen("/tmp/wpa_supplicant.conf", "wb");
-                fwrite(s_acTemp, 1, strlen(s_acTemp), pstream);
-                fclose(pstream);
-                i = l = k = 0;
+                s_i32WiFiFlag = 1;
+                s_i32WifiDhcpFlag = 1;
             }
         }
         else
         {
-            printf("#### l=%s %d ###\n", acTemp, l);
-            l++;
-            if (l >= 10)
-            {
-                l=0;
-                #if 1 // FIXME
-                i = 10;
-                k = 0;
+            i++;
+            if (i == 50)
                 goto __RECONNECT_WIFI__;
-                #endif
-                break;
+        }
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_wifi_status = popen("wpa_cli -i wlan0 signal_poll|grep RSSI=|cut -f2 -d=", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_wifi_status);
+        //printf("### 020 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_wifi_status);
+        // FIXME
+        g_au8WiFiSignal[0] = acTemp[1];
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_wifi_status = popen("wpa_cli -i wlan0 scan", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_wifi_status);
+        //printf("### 021 0x%x 0x%x %d =%s###\n", acTemp[0], acTemp[1], strlen(acTemp), acTemp);
+        pclose(pstream_wifi_status);
+
+        if (strlen(acTemp) > 0)
+            acTemp[strlen(acTemp) - 1] = 0x00;
+
+        if (strcmp("OK", acTemp) == 0)
+        {
+            memset(acTemp, 0x00, i32aTempSize);
+            pstream_wifi_status = popen("wpa_cli -i wlan0 scan_results|grep ':'|awk -F '\t' '{print $5}'", "r");
+            fread(acTemp, 1, i32aTempSize, pstream_wifi_status);
+            //printf("### 022 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+            pclose(pstream_wifi_status);
+
+            if (strlen(acTemp) > 0)
+            {
+                acTemp[strlen(acTemp) - 1] = 0x00;
+                strcpy(g_au8WiFiList, acTemp);
             }
         }
-        pclose(pstream_wifi_status);
-    }
-    }
-#if 0
-    memset(acTemp, 0x00, 40);
-    pstream2 = popen("udhcpc -i wlan0", "r");
-    //fread(acTemp, 1, 40, pstream);
-    //pclose(pstream2);
-//#if 0
-    memset(acTemp, 0x00, 40);
-    pstream3 = popen("ntpdate tw.pool.ntp.org", "r");
-    //fread(acTemp, 1, 40, pstream);
-    pclose(pstream3);
-#endif
-    printf("### all done ###\n");
 
-    for (;;)
-        usleep(1000000);  //delay 1000 ms
+        usleep(1000000);
+    }
 }
 
 
@@ -413,16 +378,294 @@ void *NetworkTask_ISR(void *arg)
     NetworkTask();
 }
 
+void *NetworkTask2_ISR(void *arg)
+{
+    FILE *pstream_dhcp;
+    char acTemp[4096];
+    int i32aTempSize;
+
+    i32aTempSize = sizeof(acTemp);
+
+    printf("Network Task2 thread\n");
+    for(;;)
+    {
+        if (s_i32Eth0DhcpFlag == 1)
+        {
+            s_i32Eth0DhcpFlag = 0;
+
+            memset(acTemp, 0x00, i32aTempSize);
+            pstream_dhcp = popen("udhcpc -i eth0 -q|grep 'adding'|awk '/adding/ {print $2}'", "r");
+            // FIXME, block in read until plug-in
+            fread(acTemp, 1, i32aTempSize, pstream_dhcp);
+            printf("### 008 0x%x 0x%x %d =%s###\n", acTemp[0], acTemp[1], strlen(acTemp), acTemp);
+            pclose(pstream_dhcp);
+
+            if (strlen(acTemp) > 4)
+                acTemp[strlen(acTemp) - 5] = 0x00;
+            else if (strlen(acTemp) > 0)
+                acTemp[strlen(acTemp) - 1] = 0x00;
+
+            if (strcmp("dns", acTemp) == 0)
+            {
+                printf("### 009 %s found ###\n", acTemp);
+
+                memset(acTemp, 0x00, i32aTempSize);
+                pstream_dhcp = popen("ifconfig eth0|grep 'inet addr:'|awk '/192/ {print $2}'|sed s/addr://", "r");
+                fread(acTemp, 1, i32aTempSize, pstream_dhcp);
+                printf("### 010 %d eip=%s###\n", strlen(acTemp), acTemp);
+                pclose(pstream_dhcp);
+
+                if (strlen(acTemp) > 0)
+                {
+                    acTemp[strlen(acTemp) - 1] = 0x00;
+                    strcpy(g_au8Eth0IP, acTemp);
+                }
+
+                SettingEthernetFlag = 1;
+                g_SettingEthernetFlag = 1;
+                printf("### 011 eip=%s ###\n", acTemp);
+            }
+        }
+
+        usleep(1000000);  //delay 1000 ms
+    }
+}
+
+void *NetworkTask3_ISR(void *arg)
+{
+    FILE *pstream_dhcp;
+    char acTemp[4096];
+    int i32aTempSize;
+
+    i32aTempSize = sizeof(acTemp);
+
+    printf("Network Task3 thread\n");
+    for(;;)
+    {
+        if (s_i32WifiDhcpFlag == 1)
+        {
+            s_i32WifiDhcpFlag = 0;
+
+            memset(acTemp, 0x00, i32aTempSize);
+            // FIXME may block here
+            pstream_dhcp = popen("udhcpc -i wlan0 -q|grep 'adding'|awk '/adding/ {print $2}'", "r");
+            fread(acTemp, 1, i32aTempSize, pstream_dhcp);
+            printf("### 016 0x%x 0x%x %d =%s###\n", acTemp[0], acTemp[1], strlen(acTemp), acTemp);
+            pclose(pstream_dhcp);
+
+            if (strlen(acTemp) > 4)
+                acTemp[strlen(acTemp) - 5] = 0x00;
+            else if (strlen(acTemp) > 0)
+                acTemp[strlen(acTemp) - 1] = 0x00;
+
+            if (strcmp("dns", acTemp) == 0)
+            {
+                printf("### 017 %s found ###\n", acTemp);
+
+                memset(acTemp, 0x00, i32aTempSize);
+                pstream_dhcp = popen("ifconfig wlan0|grep 'inet addr:'|awk '/192/ {print $2}'|sed s/addr://", "r");
+                fread(acTemp, 1, i32aTempSize, pstream_dhcp);
+                printf("### 018 %d wip=%s###\n", strlen(acTemp), acTemp);
+                pclose(pstream_dhcp);
+
+                if (strlen(acTemp) > 0)
+                {
+                    acTemp[strlen(acTemp) - 1] = 0x00;
+                    strcpy(g_au8WiFiIP, acTemp);
+                }
+
+                SettingWiFiFlag = 1;
+                g_SettingEthernetFlag = 1;
+                printf("### 019 wip=%s ###\n", acTemp);
+            }
+        }
+
+        usleep(1000000);  //delay 1000 ms
+    }
+}
+
+void *NetworkTask4_ISR(void *arg)
+{
+    FILE *pstream_ntpdate;
+    char acTemp[4096];
+    int i32aTempSize;
+
+    i32aTempSize = sizeof(acTemp);
+
+    printf("Network Task4 thread\n");
+    for(;;)
+    {
+        usleep(10000000);  //delay 10000 ms
+#if 1   // FIXME
+            memset(acTemp, 0x00, i32aTempSize);
+            pstream_ntpdate = popen("ntpdate pool.ntp.org", "r");
+            fread(acTemp, 1, i32aTempSize, pstream_ntpdate);
+            printf("### 023 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+            pclose(pstream_ntpdate);
+#endif
+    }
+}
+
+extern U8 g_au8CITY[];
+extern U8 g_au8Temp1[];
+extern U8 g_au8TempF1[];
+char g_au8CITYWeather[1024];
+I32 g_i32WeatherSmallFlag;
+I32 g_i32WeatherBigFlag;
+
+void *NetworkTask5_ISR(void *arg)
+{
+    FILE *pstream_curl;
+    char acTemp[4096];
+    int i32aTempSize;
+
+    i32aTempSize = sizeof(acTemp);
+
+    printf("Network Task5 thread\n");
+    for(;;)
+    {
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep 'Weather report: '|awk -F ': ' '{print $2}'", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### city 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E -o '[A-Z].+[a-z]'|sed -E '/Weather report/d'", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### weather 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E -o '[-]?[0-9]+\\.\\.'|sed -E 's/\\.\\.//g'", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### degree real 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        if (strlen(acTemp) > 0)
+        {
+            acTemp[strlen(acTemp) - 1] = 0x00;
+            strcpy(g_au8Temp1, acTemp);
+        }
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E -o '\\.\\.[-]?[0-9]+'|sed -E 's/\\.\\.//g'", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### degree feels 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        if (strlen(acTemp) > 0)
+        {
+            acTemp[strlen(acTemp) - 1] = 0x00;
+            strcpy(g_au8TempF1, acTemp);
+        }
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E -o $'\xE2\x86\x90'.+h", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### wind left 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E -o $'\xE2\x86\x91'.+h", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### wind up 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E -o $'\xE2\x86\x92'.+h", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### wind right 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E -o $'\xE2\x86\x93'.+h", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### wind down 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E -o $'\xE2\x86\x96'.+h", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### wind left+up 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E -o $'\xE2\x86\x97'.+h", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### wind right+up 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E -o $'\xE2\x86\x98'.+h", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### wind right+down 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E -o $'\xE2\x86\x99'.+h", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### wind left+down 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E '[0-9]+ km'|sed '/h/d'|grep -E -o '[0-9]+ km'", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### visi 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        memset(acTemp, 0x00, i32aTempSize);
+        pstream_curl = popen("cat /tmp/test1.txt|grep -E -o '[0-9]+\\.[0-9]+ mm'", "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### rain 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        usleep(60000000);  //delay 60000 ms
+
+        memset(acTemp, 0x00, i32aTempSize);
+        sprintf(g_au8CITYWeather, "curl http://wttr.in/%s?0T > /tmp/test1.txt", g_au8CITY);
+        pstream_curl = popen(g_au8CITYWeather, "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        //printf("### 024 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        g_i32WeatherSmallFlag = 0;
+
+        memset(acTemp, 0x00, i32aTempSize);
+        sprintf(g_au8CITYWeather, "curl http://wttr.in/%s_0q.png --output /tmp/w1.png", g_au8CITY);
+        pstream_curl = popen(g_au8CITYWeather, "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### 025 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        g_i32WeatherSmallFlag = 1;
+
+        g_i32WeatherBigFlag = 0;
+
+        memset(acTemp, 0x00, i32aTempSize);
+        sprintf(g_au8CITYWeather, "curl http://wttr.in/%s_3Fq.png --output /tmp/w2.png", g_au8CITY);
+        pstream_curl = popen(g_au8CITYWeather, "r");
+        fread(acTemp, 1, i32aTempSize, pstream_curl);
+        printf("### 026 0x%x 0x%x =%s###\n", acTemp[0], acTemp[1], acTemp);
+        pclose(pstream_curl);
+
+        g_i32WeatherBigFlag = 1;
+    }
+}
+
 int main()
 {
     int fd, ret;
     int i, t = 0;
+    FILE *pstream;
+    char acTemp[4096];
+    int i32aTempSize;
 
     FILE *fpVideoImg;
 
     unsigned long uVideoSize;
 
-    pthread_t tid1, tid2, tid3;
+    pthread_t tid1, tid2, tid3, tid4, tid5, tid6, tid7;
 
 
     fd = open("/dev/fb0", O_RDWR);
@@ -461,13 +704,47 @@ int main()
     g_yres = var.yres;
     g_bits_per_pixel = var.bits_per_pixel;
 
+    i32aTempSize = sizeof(acTemp);
+
+    memset(acTemp, 0x00, i32aTempSize);
+    pstream = popen("cp /mnt/conf/wpa_supplicant.conf /tmp", "r");
+    fread(acTemp, 1, i32aTempSize, pstream);
+    printf("### cp /mnt/conf/wpa_supplicant.conf /tmp ###\n");
+    pclose(pstream);
+
+    memset(acTemp, 0x00, i32aTempSize);
+    pstream = popen("cp /mnt/png/w1.png /tmp", "r");
+    fread(acTemp, 1, i32aTempSize, pstream);
+    printf("### cp /mnt/png/w1.png /tmp ###\n");
+    pclose(pstream);
+
+    memset(acTemp, 0x00, i32aTempSize);
+    pstream = popen("cp /mnt/png/w2.png /tmp", "r");
+    fread(acTemp, 1, i32aTempSize, pstream);
+    printf("### cp /mnt/png/w2.png /tmp ###\n");
+    pclose(pstream);
+
+    memset(acTemp, 0x00, i32aTempSize);
+    pstream = popen("cp /mnt/conf/test1.txt /tmp", "r");
+    fread(acTemp, 1, i32aTempSize, pstream);
+    printf("### cp /mnt/conf/test1.txt /tmp ###\n");
+    pclose(pstream);
+
     pthread_create(&tid1, NULL, MainTask_ISR, (void *)"MainTask");
     pthread_create(&tid2, NULL, TouchTask_ISR, (void *)"TouchTask");
     pthread_create(&tid3, NULL, NetworkTask_ISR, (void *)"NetworkTask");
+    pthread_create(&tid4, NULL, NetworkTask2_ISR, (void *)"NetworkTask2");
+    pthread_create(&tid5, NULL, NetworkTask3_ISR, (void *)"NetworkTask3");
+    pthread_create(&tid6, NULL, NetworkTask4_ISR, (void *)"NetworkTask4");
+    pthread_create(&tid7, NULL, NetworkTask5_ISR, (void *)"NetworkTask5");
 
     pthread_join(tid1, NULL);
     pthread_join(tid2, NULL);
     pthread_join(tid3, NULL);
+    pthread_join(tid4, NULL);
+    pthread_join(tid5, NULL);
+    pthread_join(tid6, NULL);
+    pthread_join(tid7, NULL);
 
 //    MainTask();
 

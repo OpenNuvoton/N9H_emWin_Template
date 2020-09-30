@@ -1,0 +1,7 @@
+Weather report: taipei
+
+     \  /       Partly cloudy
+   _ /"".-.     29..34 °C      
+     \_(   ).   ← 17 km/h      
+     /(___(__)  10 km          
+                0.0 mm         
