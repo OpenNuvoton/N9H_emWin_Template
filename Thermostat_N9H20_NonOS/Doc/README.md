@@ -25,3 +25,11 @@ Update NVT NAND Loader.
 ### Nuvoton_Update_HMI_Touch.zip
 
 Fix capacitive touch.
+
+### rdk-n9h20 v300.pdf
+
+Introduction of PCB schematic.
+
+### CH_N9H20_温控器HW.pdf
+
+Introduction of H/W peripherals.
