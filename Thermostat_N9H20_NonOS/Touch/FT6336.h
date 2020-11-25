@@ -9,7 +9,11 @@
 
 #include "N9H20.h"
 
+/* Default ID */
 #define I2C_ADDR_FT6336             0x48
+
+/* Note if 0x48 didn't work, please change to 0x38 */
+//#define I2C_ADDR_FT6336             0x38
 
 #define FT6336_ADDR_DEVICE_MODE     0x00
 #define FT6336_ADDR_TD_STATUS       0x02
