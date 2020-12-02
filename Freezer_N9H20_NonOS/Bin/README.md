@@ -3,7 +3,7 @@
 ### Binary File
 
 ```c
-conprog.bin Application same as NAND1-1's conprog.bin
+conprog.bin Application same as NAND1-1 conprog.bin
 N9H20K5_NANDLoader_192MHz.bin NAND Loader for N9H20@192MHz 32MB RAM
 N9H20K5_NVT_NAND_FW043TFT.bin Second loader with display driver for 480x272 LCD
 ```
