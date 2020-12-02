@@ -1,0 +1,325 @@
+
+
+Enter Connect thread
+
+API AddPMPdevice
+USB\VID_0416&PID_9396\USB_DEV
+ACPI\PNP0C0A\1
+SWD\PRINTENUM\{EF1F75A4-5C0E-4441-8277-99AA3530E617}
+USB\VID_0458&PID_003A\5&2393C676&0&1
+USB\VID_1A40&PID_0101\6&17364F09&0&1
+ROOT\KEYBOARD\0000
+SWD\PRINTENUM\{7D87ECCE-B92E-4847-93C6-F2F50578F023}
+SWD\PRINTENUM\{9F593E88-DCBF-47FA-9F86-250AFF083EB8}
+SWD\PRINTENUM\{1D4B57D6-98A8-4A2B-9368-4023F45D73C4}
+USB\VID_1A40&PID_0201\5&2393C676&0&2
+USB\VID_04F2&PID_B39A&MI_00\6&8733EA9&0&0000
+SWD\PRINTENUM\{29A5F5C8-92C4-4A9A-869D-981EE070231A}
+
+Device Descriptor USB Mass Storage Device
+
+Device Descriptor Microsoft ACPI-Compliant Control Method Battery
+
+Device Descriptor Fax
+
+Device Descriptor USB Input Device
+
+Device Descriptor Generic USB Hub
+
+Device Descriptor DameWare Virtual Keyboard Emulation for Standard Keyboard
+
+Device Descriptor 또캿╁ OneNote 2010
+
+Device Descriptor Microsoft XPS Document Writer
+
+Device Descriptor Microsoft Print to PDF
+
+Device Descriptor Generic USB Hub
+
+Device Descriptor Integrated Camera
+
+Device Descriptor \\nthcprnt02\PRT_Nuvoton
+
+No Device found
+API AddPMPdevice
+USB\VID_0416&PID_9396\USB_DEV
+ACPI\PNP0C0A\1
+SWD\PRINTENUM\{EF1F75A4-5C0E-4441-8277-99AA3530E617}
+USB\VID_0458&PID_003A\5&2393C676&0&1
+USB\VID_1A40&PID_0101\6&17364F09&0&1
+ROOT\KEYBOARD\0000
+SWD\PRINTENUM\{7D87ECCE-B92E-4847-93C6-F2F50578F023}
+SWD\PRINTENUM\{9F593E88-DCBF-47FA-9F86-250AFF083EB8}
+SWD\PRINTENUM\{1D4B57D6-98A8-4A2B-9368-4023F45D73C4}
+USB\VID_1A40&PID_0201\5&2393C676&0&2
+USB\VID_04F2&PID_B39A&MI_00\6&8733EA9&0&0000
+SWD\PRINTENUM\{29A5F5C8-92C4-4A9A-869D-981EE070231A}
+
+Device Descriptor USB Mass Storage Device - Drive (D:)
+
+Device Descriptor Microsoft ACPI-Compliant Control Method Battery - Drive (D:)
+
+Device Descriptor Fax - Drive (D:)
+
+Device Descriptor USB Input Device - Drive (D:)
+
+Device Descriptor Generic USB Hub - Drive (D:)
+
+Device Descriptor DameWare Virtual Keyboard Emulation for Standard Keyboard - Drive (D:)
+
+Device Descriptor 또캿╁ OneNote 2010 - Drive (D:)
+
+Device Descriptor Microsoft XPS Document Writer - Drive (D:)
+
+Device Descriptor Microsoft Print to PDF - Drive (D:)
+
+Device Descriptor Generic USB Hub - Drive (D:)
+
+Device Descriptor Integrated Camera - Drive (D:)
+
+Device Descriptor \\nthcprnt02\PRT_Nuvoton - Drive (D:)
+MASS STORAGE 9396 FOUNDnum = 1, Dev=D
+ Handle ID = 4bc
+OK = 1.00
+Detect VCOM...Failed
+Detect IBR_MASSSTOR ... 
+Running recovery mode
+API AddPMPdevice
+USB\VID_0416&PID_9396\USB_DEV
+ACPI\PNP0C0A\1
+SWD\PRINTENUM\{EF1F75A4-5C0E-4441-8277-99AA3530E617}
+USB\VID_0458&PID_003A\5&2393C676&0&1
+USB\VID_1A40&PID_0101\6&17364F09&0&1
+ROOT\KEYBOARD\0000
+SWD\PRINTENUM\{7D87ECCE-B92E-4847-93C6-F2F50578F023}
+SWD\PRINTENUM\{9F593E88-DCBF-47FA-9F86-250AFF083EB8}
+SWD\PRINTENUM\{1D4B57D6-98A8-4A2B-9368-4023F45D73C4}
+USB\VID_1A40&PID_0201\5&2393C676&0&2
+USB\VID_04F2&PID_B39A&MI_00\6&8733EA9&0&0000
+SWD\PRINTENUM\{29A5F5C8-92C4-4A9A-869D-981EE070231A}
+
+Device Descriptor USB Mass Storage Device - Drive (D:)
+
+Device Descriptor Microsoft ACPI-Compliant Control Method Battery - Drive (D:)
+
+Device Descriptor Fax - Drive (D:)
+
+Device Descriptor USB Input Device - Drive (D:)
+
+Device Descriptor Generic USB Hub - Drive (D:)
+
+Device Descriptor DameWare Virtual Keyboard Emulation for Standard Keyboard - Drive (D:)
+
+Device Descriptor 또캿╁ OneNote 2010 - Drive (D:)
+
+Device Descriptor Microsoft XPS Document Writer - Drive (D:)
+
+Device Descriptor Microsoft Print to PDF - Drive (D:)
+
+Device Descriptor Generic USB Hub - Drive (D:)
+
+Device Descriptor Integrated Camera - Drive (D:)
+
+Device Descriptor \\nthcprnt02\PRT_Nuvoton - Drive (D:)
+MASS STORAGE 9396 FOUNDnum = 1, Dev=D
+ Handle ID = 4dc
+OK = 1.00
+Detect Mass Storage...(1)
+Running recovery mode OK, send commands
+Enter IBR connection
+Detect VASERIES_MASSSTOR_...
+Download Successful...!
+Detect MASS STORAGE 5593!
+API AddPMPdevice
+USB\VID_0416&PID_9396\USB_DEV
+ACPI\PNP0C0A\1
+SWD\PRINTENUM\{EF1F75A4-5C0E-4441-8277-99AA3530E617}
+USB\VID_0458&PID_003A\5&2393C676&0&1
+USB\VID_1A40&PID_0101\6&17364F09&0&1
+ROOT\KEYBOARD\0000
+SWD\PRINTENUM\{7D87ECCE-B92E-4847-93C6-F2F50578F023}
+SWD\PRINTENUM\{9F593E88-DCBF-47FA-9F86-250AFF083EB8}
+SWD\PRINTENUM\{1D4B57D6-98A8-4A2B-9368-4023F45D73C4}
+USB\VID_1A40&PID_0201\5&2393C676&0&2
+USB\VID_04F2&PID_B39A&MI_00\6&8733EA9&0&0000
+SWD\PRINTENUM\{29A5F5C8-92C4-4A9A-869D-981EE070231A}
+
+Device Descriptor USB Mass Storage Device
+
+Device Descriptor Microsoft ACPI-Compliant Control Method Battery
+
+Device Descriptor Fax
+
+Device Descriptor USB Input Device
+
+Device Descriptor Generic USB Hub
+
+Device Descriptor DameWare Virtual Keyboard Emulation for Standard Keyboard
+
+Device Descriptor 또캿╁ OneNote 2010
+
+Device Descriptor Microsoft XPS Document Writer
+
+Device Descriptor Microsoft Print to PDF
+
+Device Descriptor Generic USB Hub
+
+Device Descriptor Integrated Camera
+
+Device Descriptor \\nthcprnt02\PRT_Nuvoton
+
+No Device found
+Please wait...(1) !
+API AddPMPdevice
+ACPI\PNP0C0A\1
+SWD\PRINTENUM\{EF1F75A4-5C0E-4441-8277-99AA3530E617}
+USB\VID_0458&PID_003A\5&2393C676&0&1
+USB\VID_1A40&PID_0101\6&17364F09&0&1
+ROOT\KEYBOARD\0000
+SWD\PRINTENUM\{7D87ECCE-B92E-4847-93C6-F2F50578F023}
+SWD\PRINTENUM\{9F593E88-DCBF-47FA-9F86-250AFF083EB8}
+SWD\PRINTENUM\{1D4B57D6-98A8-4A2B-9368-4023F45D73C4}
+USB\VID_1A40&PID_0201\5&2393C676&0&2
+USB\VID_04F2&PID_B39A&MI_00\6&8733EA9&0&0000
+SWD\PRINTENUM\{29A5F5C8-92C4-4A9A-869D-981EE070231A}
+
+Device Descriptor Microsoft ACPI-Compliant Control Method Battery
+
+Device Descriptor Fax
+
+Device Descriptor USB Input Device
+
+Device Descriptor Generic USB Hub
+
+Device Descriptor DameWare Virtual Keyboard Emulation for Standard Keyboard
+
+Device Descriptor 또캿╁ OneNote 2010
+
+Device Descriptor Microsoft XPS Document Writer
+
+Device Descriptor Microsoft Print to PDF
+
+Device Descriptor Generic USB Hub
+
+Device Descriptor Integrated Camera
+
+Device Descriptor \\nthcprnt02\PRT_Nuvoton
+
+No Device found
+Please wait...(2) !
+API AddPMPdevice
+ACPI\PNP0C0A\1
+SWD\PRINTENUM\{EF1F75A4-5C0E-4441-8277-99AA3530E617}
+USB\VID_0458&PID_003A\5&2393C676&0&1
+USB\VID_1A40&PID_0101\6&17364F09&0&1
+ROOT\KEYBOARD\0000
+SWD\PRINTENUM\{7D87ECCE-B92E-4847-93C6-F2F50578F023}
+SWD\PRINTENUM\{9F593E88-DCBF-47FA-9F86-250AFF083EB8}
+SWD\PRINTENUM\{1D4B57D6-98A8-4A2B-9368-4023F45D73C4}
+USB\VID_1A40&PID_0201\5&2393C676&0&2
+USB\VID_04F2&PID_B39A&MI_00\6&8733EA9&0&0000
+SWD\PRINTENUM\{29A5F5C8-92C4-4A9A-869D-981EE070231A}
+
+Device Descriptor Microsoft ACPI-Compliant Control Method Battery
+
+Device Descriptor Fax
+
+Device Descriptor USB Input Device
+
+Device Descriptor Generic USB Hub
+
+Device Descriptor DameWare Virtual Keyboard Emulation for Standard Keyboard
+
+Device Descriptor 또캿╁ OneNote 2010
+
+Device Descriptor Microsoft XPS Document Writer
+
+Device Descriptor Microsoft Print to PDF
+
+Device Descriptor Generic USB Hub
+
+Device Descriptor Integrated Camera
+
+Device Descriptor \\nthcprnt02\PRT_Nuvoton
+
+No Device found
+Please wait...(3) !
+API AddPMPdevice
+ACPI\PNP0C0A\1
+SWD\PRINTENUM\{EF1F75A4-5C0E-4441-8277-99AA3530E617}
+USB\VID_0458&PID_003A\5&2393C676&0&1
+USB\VID_1A40&PID_0101\6&17364F09&0&1
+ROOT\KEYBOARD\0000
+SWD\PRINTENUM\{7D87ECCE-B92E-4847-93C6-F2F50578F023}
+SWD\PRINTENUM\{9F593E88-DCBF-47FA-9F86-250AFF083EB8}
+SWD\PRINTENUM\{1D4B57D6-98A8-4A2B-9368-4023F45D73C4}
+USB\VID_1A40&PID_0201\5&2393C676&0&2
+USB\VID_04F2&PID_B39A&MI_00\6&8733EA9&0&0000
+SWD\PRINTENUM\{29A5F5C8-92C4-4A9A-869D-981EE070231A}
+
+Device Descriptor Microsoft ACPI-Compliant Control Method Battery
+
+Device Descriptor Fax
+
+Device Descriptor USB Input Device
+
+Device Descriptor Generic USB Hub
+
+Device Descriptor DameWare Virtual Keyboard Emulation for Standard Keyboard
+
+Device Descriptor 또캿╁ OneNote 2010
+
+Device Descriptor Microsoft XPS Document Writer
+
+Device Descriptor Microsoft Print to PDF
+
+Device Descriptor Generic USB Hub
+
+Device Descriptor Integrated Camera
+
+Device Descriptor \\nthcprnt02\PRT_Nuvoton
+
+No Device found
+Please wait...(4) !
+API AddPMPdevice
+ACPI\PNP0C0A\1
+SWD\PRINTENUM\{EF1F75A4-5C0E-4441-8277-99AA3530E617}
+USB\VID_0458&PID_003A\5&2393C676&0&1
+USB\VID_1A40&PID_0101\6&17364F09&0&1
+ROOT\KEYBOARD\0000
+SWD\PRINTENUM\{7D87ECCE-B92E-4847-93C6-F2F50578F023}
+SWD\PRINTENUM\{9F593E88-DCBF-47FA-9F86-250AFF083EB8}
+SWD\PRINTENUM\{1D4B57D6-98A8-4A2B-9368-4023F45D73C4}
+USB\VID_1A40&PID_0201\5&2393C676&0&2
+USB\VID_04F2&PID_B39A&MI_00\6&8733EA9&0&0000
+SWD\PRINTENUM\{29A5F5C8-92C4-4A9A-869D-981EE070231A}
+USB\VID_0416&PID_5593\WINBOND
+
+Device Descriptor Microsoft ACPI-Compliant Control Method Battery
+
+Device Descriptor Fax
+
+Device Descriptor USB Input Device
+
+Device Descriptor Generic USB Hub
+
+Device Descriptor DameWare Virtual Keyboard Emulation for Standard Keyboard
+
+Device Descriptor 또캿╁ OneNote 2010
+
+Device Descriptor Microsoft XPS Document Writer
+
+Device Descriptor Microsoft Print to PDF
+
+Device Descriptor Generic USB Hub
+
+Device Descriptor Integrated Camera
+
+Device Descriptor \\nthcprnt02\PRT_Nuvoton
+
+Device Descriptor USB Mass Storage Device - Drive (F:)
+MASS STORAGE 5593 FOUNDnum = 1, Dev=F
+ Handle ID = 4a8
+OK = 1.00
+Please wait...(5) !
+Mass Storage Connected!
