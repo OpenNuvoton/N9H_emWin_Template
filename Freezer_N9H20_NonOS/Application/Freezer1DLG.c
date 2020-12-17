@@ -204,6 +204,12 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_0);
     NVT_Freezer1SetButton(hItem, 1);
 
+    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_2);
+    TEXT_SetText(hItem, "23.5\xB0\x43");
+
+    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_4);
+    TEXT_SetText(hItem, "-8.0\xB0\x43");
+
     WM_CreateWindowAsChild(8, 190, 256, 200, pMsg->hWin, WM_CF_SHOW | WM_CF_STAYONTOP, _cbTempMenu, 0);
 
     // USER END
