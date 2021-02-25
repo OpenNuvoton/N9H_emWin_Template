@@ -18,6 +18,12 @@
 // Modbus Master include file
 #include  "def.h"
 
+#if NVT_WIFI   /* WiFi */
+#include "protocol.h"
+#include "mcu_api.h"
+#include "wifi.h"
+#endif
+
 /*********************************************************************
 Constraints on LCD panel N9H20_VPOST_FW050TFT_800x480.lib:
 
@@ -49,6 +55,11 @@ extern void TouchTask(void);
 
 UARTDEV_T	RS485Uart;
 UARTDEV_T* pUartDevISR;
+
+#if NVT_WIFI   /* WiFi */
+UARTDEV_T UART0;	/*High speed */
+UARTDEV_T* pUART0;
+#endif
 
 #ifndef STORAGE_SD
 #define NAND_2      1   // comment to use 1 disk foor NAND, uncomment to use 2 disk
@@ -143,6 +154,37 @@ void TMR0_IRQHandler_TouchTask(void)
     }
 }
 
+#if NVT_WIFI   /* WiFi */
+void UartDataValid_Handler(UINT8* buf, UINT32 u32Len)
+{
+//	UINT32 u32Idx;
+	INT32 i;
+
+	if(u32Len == 0)
+	{
+		sysprintf("uart rx Len = %d\n", u32Len);
+		return;
+	}
+//	for(u32Idx = 0; u32Idx < u32Len; u32Idx++)
+//	{
+//		sysprintf("uart rx buf[%d] = 0x%x ",u32Idx, buf[u32Idx]);
+//		sysprintf("\n");
+//	}
+
+	for(i = 0; i < u32Len; i++)
+	{
+		uart_receive_input(buf[i]);
+	}
+	memset(buf, 0, u32Len);
+}
+
+void Uart_PutChar(UINT8 value)
+{
+	pUART0->UartTransfer((char*)&value, 1);
+	//sysprintf("0x%x ",value);
+}
+#endif
+
 /*********************************************************************
 *
 *       _SYS_Init
@@ -159,12 +201,30 @@ static void _SYS_Init(void)
     sysUartPort(1);
     uart.uart_no = WB_UART_1;
     uart.uiFreq = u32ExtFreq;   //use APB clock
+
+#if NVT_WIFI    /* WiFi */
+    uart.uiBaudrate = 9600;
+#else
     uart.uiBaudrate = 115200;
+#endif
+
     uart.uiDataBits = WB_DATA_BITS_8;
     uart.uiStopBits = WB_STOP_BITS_1;
     uart.uiParity = WB_PARITY_NONE;
     uart.uiRxTriggerLevel = LEVEL_1_BYTE;
     sysInitializeUART(&uart);
+
+#if NVT_WIFI   /* WiFi */
+    //uart0 init
+    register_uart_device(1, &UART0);
+    pUART0 = &UART0;
+    pUART0->UartPort(1);
+    pUART0->UartInitialize(&uart);
+    pUART0->UartEnableInt(UART_INT_RDA);
+    pUART0->UartInstallcallback(UART_INT_RDA, UartDataValid_Handler);
+//    pUART0->UartEnableInt(UART_INT_RDTO);
+//    pUART0->UartInstallcallback(UART_INT_RDTO, UartDataTimeOut_Handler);
+#endif
 
     // For Uart-0
     outp32(REG_APBCLK, inp32(REG_APBCLK)| 0x08);        // enable Uart-0 clock
@@ -231,7 +291,7 @@ static void _SYS_Init(void)
         please don't call this function and must implement another similar one to enable LCD backlight. */
     vpostEnaBacklight();
 #else
-    u8FrameBufPtr  = (UINT8 *)((UINT32)0x81900000);
+    u8FrameBufPtr  = (UINT8 *)((UINT32)0x80500000);
 #endif
 }
 
