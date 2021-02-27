@@ -373,9 +373,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>__DEMO_INIT_BY_DRIVER__=0</Define>
+              <Define>__DEMO_INIT_BY_DRIVER__=0 NVT_WIFI=0</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\..\Driver\Include;..\..\..\..\ThirdParty\emWin\Config;..\..\..\..\ThirdParty\emWin\Include;..\Touch;..\Lcd;..\Modbus_Master;..\Application;..\Application\Heading;..\Application\Menu1;..\Application\Menu2;..\Application\Menu3;..\Application\Common;..\Application\Font</IncludePath>
+              <IncludePath>..\..\..\..\Driver\Include;..\..\..\..\ThirdParty\emWin\Config;..\..\..\..\ThirdParty\emWin\Include;..\Touch;..\Lcd;..\Modbus_Master;..\Application;..\Application\Heading;..\Application\Menu1;..\Application\Menu2;..\Application\Menu3;..\Application\Common;..\Application\Font;..\Tuya_IoT</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1248,6 +1248,36 @@
         </Group>
         <Group>
           <GroupName>Font</GroupName>
+        </Group>
+        <Group>
+          <GroupName>Tuya_IoT</GroupName>
+          <Files>
+            <File>
+              <FileName>mcu_api.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Tuya_IoT\mcu_api.h</FilePath>
+            </File>
+            <File>
+              <FileName>protocol.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Tuya_IoT\protocol.h</FilePath>
+            </File>
+            <File>
+              <FileName>system.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Tuya_IoT\system.h</FilePath>
+            </File>
+            <File>
+              <FileName>wifi.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Tuya_IoT\wifi.h</FilePath>
+            </File>
+            <File>
+              <FileName>TUYA_IoT.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\Tuya_IoT\TUYA_IoT.lib</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>

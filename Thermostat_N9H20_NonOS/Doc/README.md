@@ -33,3 +33,11 @@ Introduction of PCB schematic.
 ### CH_N9H20_温控器HW.pdf
 
 Introduction of H/W peripherals.
+
+### Thermostat_HMI_with_Tuya_IoT_Template.pdf
+
+Quick start guide to integrate Tuya IoT to Thermostat HMI template
+
+### DP_ID_List.xlsx
+
+Tuya IoT data-point id list.

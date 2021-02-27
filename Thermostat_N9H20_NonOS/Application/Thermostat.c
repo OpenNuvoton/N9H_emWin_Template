@@ -74,7 +74,7 @@ Requirements: WindowManager - (x)
 #include "wifi.h"
 #endif
 
-static const char s_ach2ThermostatVersion[] = {'V', '2', '.', '0', 0};
+static const char s_ach2ThermostatVersion[] = {'V', '2', '.', '1', 0};
 
 
 //extern GUI_CONST_STORAGE GUI_BITMAP bmlogo;
@@ -128,6 +128,8 @@ const struct MENU1_ITEM
 #endif
 
 char         buf[30];
+WM_HWIN s_hCal;
+static CALENDAR_DATE s_calDate;
 
 #ifdef WIN32
 #else
@@ -161,11 +163,11 @@ static void RTC_TimeDisplay(void)
 
     g_sCurTime.u32Year         = 2021;
     g_sCurTime.u32cMonth       = 2;
-    g_sCurTime.u32cDay         = 25;
+    g_sCurTime.u32cDay         = 26;
     g_sCurTime.u32cHour        = 17;
     g_sCurTime.u32cMinute      = 30;
     g_sCurTime.u32cSecond      = 50;
-    g_sCurTime.u32cDayOfWeek   = 3;
+    g_sCurTime.u32cDayOfWeek   = 4;
     g_sCurTime.u8cClockDisplay = RTC_CLOCK_24;
     RTC_Write(RTC_CURRENT_TIME, &g_sCurTime);
 
@@ -198,6 +200,10 @@ void NVT_UpdateDate(unsigned char time[])
         g_sCurTime2.u32cDayOfWeek   = time[7] - 1;
         g_sCurTime2.u8cClockDisplay = RTC_CLOCK_24;
         RTC_Write(RTC_CURRENT_TIME, &g_sCurTime2);
+        s_calDate.Year              = g_sCurTime2.u32Year;
+        s_calDate.Month             = g_sCurTime2.u32cMonth;
+        s_calDate.Day               = g_sCurTime2.u32cDay;
+        CALENDAR_SetSel(s_hCal, &s_calDate);
 //        sysprintf("### end ###\n");
     }
 }
@@ -473,9 +479,6 @@ extern unsigned int menu1decreaselevel_vflag;
 extern unsigned int menu1decreaselevel_v;
 
 #endif
-
-WM_HWIN s_hCal;
-static CALENDAR_DATE s_calDate;
 
 static int s_Menu3Date1Flag;
 static int s_Menu3Date2Flag;

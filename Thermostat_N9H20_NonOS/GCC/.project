@@ -35,6 +35,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>Tuya_IoT</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>Application/Thermostat.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Application/Thermostat.c</locationURI>
@@ -228,6 +233,26 @@
 			<name>Touch/N9H20TouchPanel.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Touch/N9H20TouchPanel.h</locationURI>
+		</link>
+		<link>
+			<name>Tuya_IoT/mcu_api.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Tuya_IoT/mcu_api.h</locationURI>
+		</link>
+		<link>
+			<name>Tuya_IoT/protocol.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Tuya_IoT/protocol.h</locationURI>
+		</link>
+		<link>
+			<name>Tuya_IoT/system.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Tuya_IoT/system.h</locationURI>
+		</link>
+		<link>
+			<name>Tuya_IoT/wifi.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Tuya_IoT/wifi.h</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

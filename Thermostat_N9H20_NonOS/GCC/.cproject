@@ -59,6 +59,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../ThirdParty/emWin/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Touch&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Lcd&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Tuya_IoT&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Rs485&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Modbus_Master&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Application&quot;"/>
@@ -72,6 +73,7 @@
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.363717251" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="N9H20K5=1"/>
 									<listOptionValue builtIn="false" value="__DEMO_INIT_BY_DRIVER__=0"/>
+									<listOptionValue builtIn="false" value="NVT_WIFI=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.2064383415" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -79,6 +81,7 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.661345949" name="GNU ARM Cross C Linker" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.gcsections.991868242" name="Remove unused sections (-Xlinker --gc-sections)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.gcsections" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.libs.2039043094" name="Libraries (-l)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.libs" useByScannerDiscovery="false" valueType="libs">
+									<listOptionValue builtIn="false" value="TUYA_IoT"/>
 									<listOptionValue builtIn="false" value="N9H20_SYS"/>
 									<listOptionValue builtIn="false" value="N9H20_EFFECT"/>
 									<listOptionValue builtIn="false" value="NUemWin_ARM9_GNU"/>
@@ -102,6 +105,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../Library_GCC/NVTFATLib&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../ThirdParty/emWin/Lib&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../SampleCode/emWin/ThermostatDemo/Lcd&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../SampleCode/emWin/ThermostatDemo/Tuya_IoT&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.scriptfile.523497854" name="Script files (-T)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.scriptfile" useByScannerDiscovery="false" valueType="stringList">
 									<listOptionValue builtIn="false" value="${ProjDirPath}/${ConfigName}/gcc_arm_SRAM_${ConfigDescription}.ld"/>
