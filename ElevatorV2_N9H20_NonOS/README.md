@@ -8,15 +8,19 @@ Brief of elevator 2nd generatoin
 
 ### Changelog.pdf
 
-TODO: N9H20K5 Elevator V2 change history.
+N9H20K5 Elevator V2 change history. (coming soon)
 
 ### ElevatorV2_Reference_Implementation.pdf
 
-TODO: N9H20K5 Elevator user manual.
+N9H20K5 Elevator user manual. (coming soon)
 
 ### Sample code folder structure
 
-TODO:
+(coming soon)
+
+### Windows emWin image tool
+
+(coming soon)
 
 ### Windows burning tool
 
