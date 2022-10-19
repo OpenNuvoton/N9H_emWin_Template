@@ -20,7 +20,7 @@ TODO:
 
 ### Windows burning tool
 
-AutoWriter V3.01.001_N9H20K5
+AutoWriter V3.01.001_N9H20K5.7z (password: nuvoton)
 
 ### Windows NRomMaker tool
 
