@@ -8,7 +8,7 @@ Brief of elevator 2nd generatoin
 
 ### Changelog.pdf
 
-N9H20K5 Elevator V2 change history. (coming soon)
+N9H20K5 Elevator V2 change history.
 
 ### ElevatorV2_Reference_Implementation.pdf
 
