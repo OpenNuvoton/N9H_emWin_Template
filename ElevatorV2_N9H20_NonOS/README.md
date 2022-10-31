@@ -10,19 +10,19 @@ Brief of elevator 2nd generatoin.
 
 N9H20K5 Elevator V2 change history.
 
-### ElevatorV2_Reference_Implementation.pdf
+### Elevator_V2_Reference_Implementation.pdf
 
-N9H20K5 Elevator V2 user manual. (coming soon)
+N9H20K5 Elevator V2 user manual.
 
 ### Sample code folder structure
 
-lang_ko: FW conprog.bin sample folder
-lang_zh: FW 2onprog.bin sample folder
-lang_en: FW 3onprog.bin sample folder
+lang_ko: FW conprog.bin sample folder<br>
+lang_zh: FW 2onprog.bin sample folder<br>
+lang_en: FW 3onprog.bin sample folder<br>
 
 ### Windows emWin image tool
 
-Please download "emWin Bitmap Converter" from SEGGER's website https://www.segger.com/downloads/emwin/.
+Please download "emWin Bitmap Converter" from SEGGER's website https://www.segger.com/downloads/emwin/.<br>
 You can open image .c to check the image, e. g., f9.c for floor number image.
 
 ### Windows burning tool
