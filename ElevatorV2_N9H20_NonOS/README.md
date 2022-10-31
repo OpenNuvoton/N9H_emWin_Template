@@ -4,7 +4,7 @@ This is the reference implementation on N9H20K5 NonOS platform.
 
 ### Elevator V2 Demo.pdf
 
-Brief of elevator 2nd generatoin
+Brief of elevator 2nd generatoin.
 
 ### Changelog.pdf
 
@@ -12,29 +12,32 @@ N9H20K5 Elevator V2 change history.
 
 ### ElevatorV2_Reference_Implementation.pdf
 
-N9H20K5 Elevator user manual. (coming soon)
+N9H20K5 Elevator V2 user manual. (coming soon)
 
 ### Sample code folder structure
 
-(coming soon)
+lang_ko: FW conprog.bin sample folder
+lang_zh: FW 2onprog.bin sample folder
+lang_en: FW 3onprog.bin sample folder
 
 ### Windows emWin image tool
 
-(coming soon)
+Please download "emWin Bitmap Converter" from SEGGER's website https://www.segger.com/downloads/emwin/.
+You can open image .c to check the image, e. g., f9.c for floor number image.
 
 ### Windows burning tool
 
-AutoWriter V3.01.001_N9H20K5.7z (password: nuvoton)
+AutoWriter V3.01.001_N9H20K5.7z. (password: nuvoton)
 
 ### Windows NRomMaker tool
 
-Create FAT image for burning tool
+Create FAT image for burning tool.
 
 ### Note
 
 Only support Nuvoton demo board "NuDesign HMI-N9H20" + 4.3" 480x272 LCD "NuDesign TFT-LCD4.3".
 
-PNG file support
+PNG file support.
 
 The PNG (Portable Network Graphics) format is an image format which offers lossless data
 compression and alpha blending by using a non-patented data compression method. Version
